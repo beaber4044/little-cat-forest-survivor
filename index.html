@@ -343,9 +343,8 @@ const upgrades=[
 {id:'allAttack',icon:'🔥',name:'전체 공격력',type:'support',desc:'모든 공격 피해 +4%',apply:()=>player.attackMultiplier*=1.04},
 {id:'pierce',icon:'🎯',name:'관통탄',type:'weapon',desc:'탄환이 적 2명을 추가 관통<br>강화마다 추가 관통 +2명',apply:()=>player.pierce+=2},
 {id:'laser',icon:'🔷',name:'관통 레이저',type:'weapon',desc:'관통 레이저 획득 · 2.8초마다 공격<br>한 번만 얻을 수 있어요',apply:()=>{player.laser=1}},
-{id:'laserDamage',icon:'💠',name:'레이저 위력',type:'weapon',requires:()=>player.laser>0,desc:'레이저 피해 +140<br>레이저 굵기 +16%',apply:()=>{player.laserDamage+=140;player.laserWidth=Math.min(40,player.laserWidth*1.16)}},
-{id:'laserCount',icon:'✨',name:'레이저 개수',type:'weapon',requires:()=>player.laser>0,desc:'동시에 발사하는 레이저 +1',apply:()=>player.laserCount++}];
-const recovery={id:'recovery',icon:'🍪',name:'숲의 간식',type:'support',desc:'체력 45 회복',repeat:true,apply:()=>player.hp=Math.min(player.maxHp,player.hp+45)};
+{id:'laserDamage',icon:'💠',name:'레이저 위력',type:'weapon',requires:()=>player.laser>0,desc:'레이저 피해 +140 · 굵기 +16%<br>2단계마다 레이저 +1<br>10단계에서는 +2',apply:()=>{player.laserDamage+=140;player.laserWidth=Math.min(40,player.laserWidth*1.16);const lv=(player.skills.laserDamage||0)+1;if(lv>=10)player.laserCount+=2;else if(lv%2===0)player.laserCount++}},
+{id:'recovery',icon:'🍪',name:'숲의 간식',type:'support',desc:'체력 45 회복',repeat:true,apply:()=>player.hp=Math.min(player.maxHp,player.hp+45)}];
 const epicUpgrades=[
 {id:'epicDamage',icon:'🎯',name:'사냥꾼의 조준',type:'weapon',rarity:'epic',repeat:true,desc:'탄환 피해 +28% · +10',apply:()=>player.damage=player.damage*1.28+10},
 {id:'epicRate',icon:'⚡',name:'폭풍 방아쇠',type:'weapon',rarity:'epic',repeat:true,desc:'모든 공격 간격 −12%',apply:()=>{player.rate=Math.max(.13,player.rate*.88);player.cdScale=Math.max(.3,player.cdScale*.88)}},
@@ -355,9 +354,9 @@ const epicUpgrades=[
 function bossReward(){bossRewards--;upgradeKind='boss';state='upgrade';keys={};pointer=null;choices=pickChoices();renderSkills();$('upgrade').classList.remove('hidden');$('upgrade').focus({preventScroll:true});$('upgrade-panel').scrollTop=0}
 function rank(u){return player.skills[u.id]||0}
 function chooseSkill(u){if(state!=='upgrade'||rank(u)>=skillCap(u))return;banishMode=false;u.apply();if(u.id!=='recovery')player.skills[u.id]=Math.min(skillCap(u),rank(u)+1);$('upgrade').classList.add('hidden');state='playing';keys={};pointer=null;updateHud();canvas.focus();if(bossRewards>0)bossReward();else if(player.xp>=player.need)levelUp()}
-const CHAR_FAVOR=[['blast','blastDamage','blastRange'],['laser','laserDamage','laserCount'],['aura','epicAura'],['pierce','multi'],['branch','branchDamage','branchCount']];
+const CHAR_FAVOR=[['blast','blastDamage','blastRange'],['laser','laserDamage'],['aura','epicAura'],['pierce','multi'],['branch','branchDamage','branchCount']];
 function skillPool(){return (upgradeKind==='boss'?epicUpgrades:upgrades).filter(u=>rank(u)<skillCap(u)&&(!u.requires||u.requires())&&!bannedSkills.has(u.id))}
-function pickChoices(keep){const bag=skillPool().filter(u=>!keep||!keep.includes(u));const fav=CHAR_FAVOR[selectedCharacter]||[],fw=selectedCharacter===2?5:3,w=u=>fav.indexOf(u.id)>=0?fw:1;const list=[];while(list.length<3&&bag.length){let total=0;for(const u of bag)total+=w(u);let r=Math.random()*total,idx=bag.length-1;for(let i=0;i<bag.length;i++){r-=w(bag[i]);if(r<=0){idx=i;break}}list.push(bag.splice(idx,1)[0])}while(list.length<3)list.push(recovery);return list}
+function pickChoices(keep){const bag=skillPool().filter(u=>!keep||!keep.includes(u));const fav=CHAR_FAVOR[selectedCharacter]||[],fw=fav.length<=2?5:3,w=u=>fav.indexOf(u.id)>=0?fw:1;const list=[];while(list.length<3&&bag.length){let total=0;for(const u of bag)total+=w(u);let r=Math.random()*total,idx=bag.length-1;for(let i=0;i<bag.length;i++){r-=w(bag[i]);if(r<=0){idx=i;break}}list.push(bag.splice(idx,1)[0])}while(list.length<3)list.push(recovery);return list}
 function doReroll(){if(state!=='upgrade'||banishMode||rerollsLeft<=0)return;rerollsLeft--;choices=pickChoices();renderSkills()}
 function canBanish(){return banishLeft>0&&skillPool().length>3}
 function toggleBanish(){if(state!=='upgrade')return;if(!banishMode&&!canBanish())return;banishMode=!banishMode;renderSkills()}
