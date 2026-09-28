@@ -481,7 +481,7 @@ if(player.branch&&player.branchClock<=0&&targets.length){for(let i=0;i<player.br
 if(player.branches.length){const nextTarget=b=>{let best=null,bd=player.branchRange;for(const e of enemies){if(e.hp<=0||b.hits.indexOf(e)>=0)continue;const d=Math.hypot(e.x-b.x,e.y-b.y);if(d<bd){bd=d;best=e}}return best};
  for(const b of player.branches){b.life-=dt;b.spin+=dt*13;if(b.life<=0){b.done=true;continue}
   if(!b.target||b.target.hp<=0){const n=nextTarget(b);if(!n){b.done=true;continue}b.target=n}
-  const t=b.target,dx=t.x-b.x,dy=t.y-b.y,d=Math.max(.001,Math.hypot(dx,dy)),step=Math.min(d,640*dt);
+  const t=b.target,dx=t.x-b.x,dy=t.y-b.y,d=Math.max(.001,Math.hypot(dx,dy)),step=Math.min(d,380*dt);
   b.x+=dx/d*step;b.y+=dy/d*step;
   if(d-step<=(t.radius||21)+8){hurt(t,player.branchDamage);if(b.hits.indexOf(t)<0)b.hits.push(t);
    effects.push({x:t.x,y:t.y,vx:0,vy:0,life:.26,color:'#c2e58e',ring:20});
