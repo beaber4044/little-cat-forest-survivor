@@ -319,7 +319,7 @@ function enemyExperience(e){const base=[1,2,3,4,6,9,14,20,28][e.kind||0];const g
 function skillCap(u){return u.id==='recovery'?Infinity:['blast','lightning','laser'].includes(u.id)?1:u.rarity==='epic'?5:10}
 function nextExperienceNeed(previous,nextLevel){if(selectedMode!=='endless')return Math.floor(previous*1.45+5);return nextLevel<=20?Math.floor(previous*1.28+4):Math.floor(previous*1.12+6)}
 const upgrades=[
-{id:'damage',icon:'🎯',name:'탄환 위력',type:'weapon',desc:'탄환 피해 +6%',apply:()=>player.damage*=1.06},
+{id:'damage',icon:'🎯',name:'탄환 위력',type:'weapon',desc:'탄환 피해 +18% · +4',apply:()=>player.damage=player.damage*1.18+4},
 {id:'rate',icon:'⚡',name:'빠른 발사',type:'weapon',desc:'발사 간격 −8%',apply:()=>player.rate=Math.max(.13,player.rate*.92)},
 {id:'speed',icon:'🐾',name:'가벼운 발걸음',type:'support',desc:'이동 속도 +15%',apply:()=>player.speed*=1.15},
 {id:'magnet',icon:'🧲',name:'반짝이 수집가',type:'support',desc:'경험치 수집 범위 +45',apply:()=>player.magnet+=45},
@@ -338,11 +338,11 @@ const upgrades=[
 {id:'allAttack',icon:'🔥',name:'전체 공격력',type:'support',desc:'모든 공격 피해 +4%',apply:()=>player.attackMultiplier*=1.04},
 {id:'pierce',icon:'🎯',name:'관통탄',type:'weapon',desc:'탄환이 적 2명을 추가 관통<br>강화마다 추가 관통 +2명',apply:()=>player.pierce+=2},
 {id:'laser',icon:'🔷',name:'관통 레이저',type:'weapon',desc:'관통 레이저 획득 · 2.8초마다 공격<br>한 번만 얻을 수 있어요',apply:()=>{player.laser=1}},
-{id:'laserDamage',icon:'💠',name:'레이저 위력',type:'weapon',requires:()=>player.laser>0,desc:'레이저 피해 +35',apply:()=>player.laserDamage+=35},
+{id:'laserDamage',icon:'💠',name:'레이저 위력',type:'weapon',requires:()=>player.laser>0,desc:'레이저 피해 +95',apply:()=>player.laserDamage+=95},
 {id:'laserCount',icon:'✨',name:'레이저 개수',type:'weapon',requires:()=>player.laser>0,desc:'동시에 발사하는 레이저 +1',apply:()=>player.laserCount++}];
 const recovery={id:'recovery',icon:'🍪',name:'숲의 간식',type:'support',desc:'체력 45 회복',repeat:true,apply:()=>player.hp=Math.min(player.maxHp,player.hp+45)};
 const epicUpgrades=[
-{id:'epicDamage',icon:'🎯',name:'사냥꾼의 조준',type:'weapon',rarity:'epic',repeat:true,desc:'탄환 피해 +10%',apply:()=>player.damage*=1.10},
+{id:'epicDamage',icon:'🎯',name:'사냥꾼의 조준',type:'weapon',rarity:'epic',repeat:true,desc:'탄환 피해 +28% · +10',apply:()=>player.damage=player.damage*1.28+10},
 {id:'epicRate',icon:'⚡',name:'폭풍 방아쇠',type:'weapon',rarity:'epic',repeat:true,desc:'발사 간격 −12%',apply:()=>player.rate=Math.max(.13,player.rate*.88)},
 {id:'epicAura',icon:'🌟',name:'별빛 집중',type:'weapon',requires:()=>player.aura>0,rarity:'epic',repeat:true,desc:'별빛 고리 피해 +40<br>고리 반경 +28',apply:()=>{player.aura+=2;player.auraRadius+=28}},
 {id:'epicHealth',icon:'♥',name:'숲의 수호자',type:'support',rarity:'epic',repeat:true,desc:'최대 체력 +60<br>체력 전부 회복',apply:()=>{player.maxHp+=60;player.hp=player.maxHp}},
