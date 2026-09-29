@@ -1215,6 +1215,7 @@ const upgrades=[
 {id:'laser',icon:'🔷',name:'관통 레이저',type:'weapon',desc:'관통 레이저 획득 · 2.8초마다 공격<br>한 번만 얻을 수 있어요',apply:()=>{player.laser=1}},
 {id:'laserDamage',icon:'💠',name:'레이저 위력',type:'weapon',requires:()=>player.laser>0,desc:'레이저 피해 +112 · 굵기 +16%<br>공격 속도 +10% · 사거리 +70<br>2단계마다 레이저 +1',apply:()=>{player.laserDamage+=112;player.laserWidth=Math.min(40,player.laserWidth*1.16);player.laserRate=Math.max(1.1,player.laserRate*.9);player.laserRange+=70;const lv=(player.skills.laserDamage||0)+1;if(lv%2===0)player.laserCount++}},
 {id:'recovery',icon:'🍪',name:'숲의 간식',type:'support',desc:'체력 45 회복',repeat:true,apply:()=>player.hp=Math.min(player.maxHp,player.hp+45)}];
+const recovery=upgrades.find(u=>u.id==='recovery');
 const epicUpgrades=[
 {id:'epicDamage',icon:'🎯',name:'사냥꾼의 조준',type:'weapon',rarity:'epic',repeat:true,desc:'탄환 피해 +22.4% · +8',apply:()=>player.damage=player.damage*1.224+8},
 {id:'epicRate',icon:'⚡',name:'폭풍 방아쇠',type:'weapon',rarity:'epic',repeat:true,desc:'모든 공격 간격 −12%',apply:()=>{player.rate=Math.max(.13,player.rate*.88);player.cdScale=Math.max(.3,player.cdScale*.88)}},
