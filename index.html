@@ -1205,7 +1205,7 @@ const upgrades=[
 {id:'branchDamage',icon:'💫',name:'나뭇가지 위력',type:'weapon',requires:()=>player.branch>0,desc:'나뭇가지 피해 +36 · 튕김 +1<br>튕기는 사거리 +70<br>2단계마다 나뭇가지 +1<br>10단계에서는 +2',apply:()=>{player.branchDamage+=36;player.branchBounce++;player.branchRange+=70;const lv=(player.skills.branchDamage||0)+1;if(lv>=10)player.branchCount+=2;else if(lv%2===0)player.branchCount++}},
 
 {id:'blast',icon:'💣',name:'냥폭탄',type:'weapon',desc:'냥폭탄 획득 · 3초마다 투척<br>주변 몬스터를 한 방에 날려요',apply:()=>{player.blast=1}},
-{id:'blastDamage',icon:'💥',name:'냥폭탄 위력',type:'weapon',requires:()=>player.blast>0,desc:'냥폭탄 피해 +320<br>폭발 반경 +10%<br>투척 간격 −7%',apply:()=>{player.blastDamage+=320;player.blastRadius=Math.round(player.blastRadius*1.1);player.blastRate=Math.max(.35,player.blastRate*.93)}},
+{id:'blastDamage',icon:'💥',name:'냥폭탄 위력',type:'weapon',requires:()=>player.blast>0,desc:'냥폭탄 피해 +320<br>폭발 반경 +5%<br>투척 간격 −7%',apply:()=>{player.blastDamage+=320;player.blastRadius=Math.round(player.blastRadius*1.05);player.blastRate=Math.max(.35,player.blastRate*.93)}},
 
 {id:'lightning',icon:'🌩️',name:'번개',type:'weapon',desc:'번개 획득 · 2초마다 공격<br>한 번만 얻을 수 있어요',apply:()=>{player.lightning=1}},
 {id:'lightningDamage',icon:'⚡',name:'번개 위력',type:'weapon',requires:()=>player.lightning>0,desc:'번개 피해 +90 · 번개 +1<br>터지는 범위 +12 · 사거리 +60',apply:()=>{player.lightningDamage+=90;player.lightningCount++;player.lightningSplash+=12;player.lightningRange+=60}},
@@ -1220,7 +1220,7 @@ const upgrades=[
 const recovery=upgrades.find(u=>u.id==='recovery');
 const epicUpgrades=[
 {id:'allProjectiles',icon:'✦',name:'모든 발사체 증가',type:'support',rarity:'epic',repeat:true,desc:'모든 발사체 개수 +1<br>탄환 · 레이저 · 번개 · 냥폭탄<br>나뭇가지 · 통나무',apply:()=>player.projectileBonus=(player.projectileBonus||0)+1},
-{id:'allSize',icon:'🌟',name:'모든 크기 증가',type:'support',rarity:'epic',repeat:true,desc:'발사체 크기 · 공격 범위 +15%<br>탄환 · 레이저 · 별빛 고리와 잔상<br>냥폭탄 · 번개 폭발 범위',apply:()=>player.attackSize=(player.attackSize||1)*1.15},
+{id:'allSize',icon:'🌟',name:'모든 크기 증가',type:'support',rarity:'epic',repeat:true,desc:'발사체 크기 · 공격 범위 +10%<br>탄환 · 레이저 · 별빛 고리와 잔상<br>냥폭탄 · 번개 폭발 범위',apply:()=>player.attackSize=(player.attackSize||1)*1.1},
 {id:'epicDamage',icon:'🎯',name:'사냥꾼의 조준',type:'weapon',rarity:'epic',repeat:true,desc:'탄환 피해 +22.4% · +8',apply:()=>player.damage=player.damage*1.224+8},
 {id:'epicRate',icon:'⚡',name:'폭풍 방아쇠',type:'weapon',rarity:'epic',repeat:true,desc:'모든 공격 간격 −12%',apply:()=>{player.rate=Math.max(.13,player.rate*.88);player.cdScale=Math.max(.3,player.cdScale*.88)}},
 {id:'epicAura',icon:'🌟',name:'별빛 집중',type:'weapon',requires:()=>player.aura>0,rarity:'epic',repeat:true,desc:'별빛 고리 피해 +22<br>고리 반경 +28',apply:()=>{player.aura+=2;player.auraRadius+=28}},
@@ -1240,7 +1240,7 @@ function legendaryDescription(u){
  health:'최대 체력 +50<br>체력 90 회복',
  aura:player.aura>0?'별빛 고리 피해 +22<br>고리 반경 +28':'별빛 고리 획득 · 피해 31<br>고리 반경 134',
  branchDamage:'나뭇가지 피해 +72 · 튕김 +2<br>튕기는 사거리 +140<br>나뭇가지 +'+([count,count+1].reduce((sum,lv)=>sum+(lv>=10?2:lv%2===0?1:0),0)),
- blastDamage:'냥폭탄 피해 +640<br>폭발 반경 +21%<br>투척 간격 −13.51%',
+ blastDamage:'냥폭탄 피해 +640<br>폭발 반경 +10.25%<br>투척 간격 −13.51%',
  lightningDamage:'번개 피해 +180 · 번개 +2<br>터지는 범위 +24 · 사거리 +120',
  armor:'받는 피해 '+fmt(Math.max(0,Math.min(.7,player.armor+.14)-Math.min(.7,player.armor))*100)+'%p 감소<br>최대 70% 감소',
  allAttack:'모든 공격 피해 +6.09%',
