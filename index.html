@@ -1199,7 +1199,6 @@ const upgrades=[
 {id:'magnet',icon:'🧲',name:'반짝이 수집가',type:'support',desc:'경험치 수집 범위 +45',apply:()=>player.magnet+=45},
 {id:'health',icon:'♥',name:'따뜻한 간식',type:'support',desc:'최대 체력 +25<br>체력 45 회복',apply:()=>{player.maxHp+=25;player.hp=Math.min(player.maxHp,player.hp+45)}},
 {id:'aura',icon:'🌟',name:'별빛 고리',type:'weapon',desc:'기본 피해 20 · 반경 120<br>강화마다 피해 +11 · 반경 +14',apply:()=>{if(player.aura>0)player.auraRadius+=14;player.aura++}},
-{id:'multi',icon:'✦',name:'한 발 더',type:'weapon',desc:'한 번에 발사하는 탄환 +1<br>최대 11개',apply:()=>player.multi++},
 
 {id:'branch',icon:'🌿',name:'나뭇가지 던지기',type:'weapon',desc:'나뭇가지 획득 · 2.2초마다 투척<br>맞은 뒤 주변 몬스터에게 1회 튕겨요<br>한 번만 얻을 수 있어요',apply:()=>{player.branch=1}},
 {id:'branchDamage',icon:'💫',name:'나뭇가지 위력',type:'weapon',requires:()=>player.branch>0,desc:'나뭇가지 피해 +36 · 튕김 +1<br>튕기는 사거리 +70<br>2단계마다 나뭇가지 +1<br>10단계에서는 +2',apply:()=>{player.branchDamage+=36;player.branchBounce++;player.branchRange+=70;const lv=(player.skills.branchDamage||0)+1;if(lv>=10)player.branchCount+=2;else if(lv%2===0)player.branchCount++}},
@@ -1213,7 +1212,7 @@ const upgrades=[
 
 {id:'armor',icon:'🛡️',name:'단단한 털옷',type:'support',desc:'받는 피해 7%p 감소<br>10단계에서 최대 70% 감소',apply:()=>player.armor+=.07},
 {id:'allAttack',icon:'🔥',name:'전체 공격력',type:'support',desc:'모든 공격 피해 +3%',apply:()=>player.attackMultiplier*=1.03},
-{id:'pierce',icon:'🎯',name:'관통탄',type:'weapon',desc:'탄환이 적 2명을 추가 관통<br>강화마다 추가 관통 +2명',apply:()=>player.pierce+=2},
+{id:'pierce',icon:'🎯',name:'관통탄',type:'weapon',desc:'한 번에 발사하는 탄환 +1<br>탄환 추가 관통 +2명',apply:()=>{player.multi++;player.pierce+=2}},
 {id:'laser',icon:'🔷',name:'관통 레이저',type:'weapon',desc:'관통 레이저 획득 · 2.8초마다 공격<br>한 번만 얻을 수 있어요',apply:()=>{player.laser=1}},
 {id:'laserDamage',icon:'💠',name:'레이저 위력',type:'weapon',requires:()=>player.laser>0,desc:'레이저 피해 +112 · 굵기 +16%<br>공격 속도 +10% · 사거리 +70<br>2단계마다 레이저 +1',apply:()=>{player.laserDamage+=112;player.laserWidth=Math.min(40,player.laserWidth*1.16);player.laserRate=Math.max(1.1,player.laserRate*.9);player.laserRange+=70;const lv=(player.skills.laserDamage||0)+1;if(lv%2===0)player.laserCount++}},
 {id:'recovery',icon:'🍪',name:'숲의 간식',type:'support',desc:'체력 45 회복',repeat:true,apply:()=>player.hp=Math.min(player.maxHp,player.hp+45)}];
@@ -1226,7 +1225,7 @@ const epicUpgrades=[
 function bossReward(){bossRewards--;upgradeKind='boss';state='upgrade';keys={};pointer=null;choices=pickChoices();renderSkills();$('upgrade').classList.remove('hidden');$('upgrade').focus({preventScroll:true});$('upgrade-panel').scrollTop=0}
 function rank(u){return player.skills[u.id]||0}
 function chooseSkill(u){if(state!=='upgrade'||rank(u)>=skillCap(u))return;banishMode=false;u.apply();if(u.id!=='recovery')player.skills[u.id]=Math.min(skillCap(u),rank(u)+1);$('upgrade').classList.add('hidden');state='playing';keys={};pointer=null;updateHud();canvas.focus();if(bossRewards>0)bossReward();else if(player.xp>=player.need)levelUp()}
-const CHAR_FAVOR=[['blast','blastDamage','blastRange'],['laser','laserDamage'],['aura','epicAura'],['pierce','multi'],['branch','branchDamage','branchCount']];
+const CHAR_FAVOR=[['blast','blastDamage','blastRange'],['laser','laserDamage'],['aura','epicAura'],['pierce'],['branch','branchDamage','branchCount']];
 function skillPool(){return (upgradeKind==='boss'?epicUpgrades:upgrades).filter(u=>rank(u)<skillCap(u)&&(!u.requires||u.requires())&&!bannedSkills.has(u.id))}
 function legendaryDescription(u){
  const count=(player.skills[u.id]||0)+1,fmt=n=>Math.round(n*100)/100;
@@ -1237,13 +1236,12 @@ function legendaryDescription(u){
  magnet:'경험치 수집 범위 +90',
  health:'최대 체력 +50<br>체력 90 회복',
  aura:player.aura>0?'별빛 고리 피해 +22<br>고리 반경 +28':'별빛 고리 획득 · 피해 31<br>고리 반경 134',
- multi:'한 번에 발사하는 탄환 +2',
  branchDamage:'나뭇가지 피해 +72 · 튕김 +2<br>튕기는 사거리 +140<br>나뭇가지 +'+([count,count+1].reduce((sum,lv)=>sum+(lv>=10?2:lv%2===0?1:0),0)),
  blastDamage:'냥폭탄 피해 +640<br>폭발 반경 +21%<br>투척 간격 −13.51%',
  lightningDamage:'번개 피해 +180 · 번개 +2<br>터지는 범위 +24 · 사거리 +120',
  armor:'받는 피해 '+fmt(Math.max(0,Math.min(.7,player.armor+.14)-Math.min(.7,player.armor))*100)+'%p 감소<br>최대 70% 감소',
  allAttack:'모든 공격 피해 +6.09%',
- pierce:'탄환 추가 관통 +4명',
+ pierce:'한 번에 발사하는 탄환 +2<br>탄환 추가 관통 +4명',
  laserDamage:'레이저 피해 +224 · 굵기 +34.56%<br>공격 간격 −19% · 사거리 +140<br>레이저 +1'
  };
  return descriptions[u.id]||u.desc;
