@@ -1195,8 +1195,6 @@ function nextExperienceNeed(previous,nextLevel){if(!ranked())return Math.floor(p
 function attackSizeScale(){return player.attackSize||1}
 function projectileCount(base){return base+(player.projectileBonus||0)}
 const upgrades=[
-{id:'allProjectiles',icon:'✦',name:'모든 발사체 증가',type:'support',desc:'모든 발사체 개수 +1<br>탄환 · 레이저 · 번개 · 냥폭탄<br>나뭇가지 · 통나무',apply:()=>player.projectileBonus=(player.projectileBonus||0)+1},
-{id:'allSize',icon:'🌟',name:'모든 크기 증가',type:'support',desc:'발사체 크기 · 공격 범위 +15%<br>탄환 · 레이저 · 별빛 고리와 잔상<br>냥폭탄 · 번개 폭발 범위',apply:()=>player.attackSize=(player.attackSize||1)*1.15},
 {id:'rate',icon:'⚡',name:'빠른 발사',type:'weapon',desc:'모든 공격 간격 −8%',apply:()=>{player.rate=Math.max(.13,player.rate*.92);player.cdScale=Math.max(.3,player.cdScale*.92)}},
 {id:'speed',icon:'🐾',name:'가벼운 발걸음',type:'support',desc:'이동 속도 +7%',apply:()=>player.speed*=1.07},
 {id:'magnet',icon:'🧲',name:'반짝이 수집가',type:'support',desc:'경험치 수집 범위 +45',apply:()=>player.magnet+=45},
@@ -1221,6 +1219,8 @@ const upgrades=[
 {id:'recovery',icon:'🍪',name:'숲의 간식',type:'support',desc:'체력 45 회복',repeat:true,apply:()=>player.hp=Math.min(player.maxHp,player.hp+45)}];
 const recovery=upgrades.find(u=>u.id==='recovery');
 const epicUpgrades=[
+{id:'allProjectiles',icon:'✦',name:'모든 발사체 증가',type:'support',rarity:'epic',repeat:true,desc:'모든 발사체 개수 +1<br>탄환 · 레이저 · 번개 · 냥폭탄<br>나뭇가지 · 통나무',apply:()=>player.projectileBonus=(player.projectileBonus||0)+1},
+{id:'allSize',icon:'🌟',name:'모든 크기 증가',type:'support',rarity:'epic',repeat:true,desc:'발사체 크기 · 공격 범위 +15%<br>탄환 · 레이저 · 별빛 고리와 잔상<br>냥폭탄 · 번개 폭발 범위',apply:()=>player.attackSize=(player.attackSize||1)*1.15},
 {id:'epicDamage',icon:'🎯',name:'사냥꾼의 조준',type:'weapon',rarity:'epic',repeat:true,desc:'탄환 피해 +22.4% · +8',apply:()=>player.damage=player.damage*1.224+8},
 {id:'epicRate',icon:'⚡',name:'폭풍 방아쇠',type:'weapon',rarity:'epic',repeat:true,desc:'모든 공격 간격 −12%',apply:()=>{player.rate=Math.max(.13,player.rate*.88);player.cdScale=Math.max(.3,player.cdScale*.88)}},
 {id:'epicAura',icon:'🌟',name:'별빛 집중',type:'weapon',requires:()=>player.aura>0,rarity:'epic',repeat:true,desc:'별빛 고리 피해 +22<br>고리 반경 +28',apply:()=>{player.aura+=2;player.auraRadius+=28}},
@@ -1234,8 +1234,6 @@ function skillPool(){return (upgradeKind==='boss'?epicUpgrades:upgrades).filter(
 function legendaryDescription(u){
  const count=(player.skills[u.id]||0)+1,fmt=n=>Math.round(n*100)/100;
  const descriptions={
- allProjectiles:'모든 발사체 개수 +2<br>탄환 · 레이저 · 번개 · 냥폭탄<br>나뭇가지 · 통나무',
- allSize:'발사체 크기 · 공격 범위 +32.25%<br>탄환 · 레이저 · 별빛 고리와 잔상<br>냥폭탄 · 번개 폭발 범위',
  rate:'모든 공격 간격 −15.36%',
  speed:'이동 속도 +14.49%',
  magnet:'경험치 수집 범위 +90',
