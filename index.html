@@ -219,6 +219,15 @@ button svg,button img{vertical-align:middle;flex:0 0 auto}
   height: 72%;
   object-fit: contain;
 }
+
+.gear-tile .gear-set-badge {
+  position:absolute;top:3px;left:3px;
+  width:clamp(19px,5vw,25px);height:clamp(19px,5vw,25px);
+  padding:2px;border:1.5px solid var(--set-color);border-radius:7px;
+  background:#fff8e8;object-fit:contain;box-sizing:border-box;pointer-events:none;
+}
+.gear-tile.has-set .gear-worn-mark {left:auto;right:3px;}
+
 .gear-level {
   position: absolute;
   right: 4px;
@@ -2172,21 +2181,27 @@ gearLevelCost,gearLevelSpent,drawGear,mergeProblem,mergeAllPlan,effectUnlocked,n
   }
 
   // ── 그리기 ─────────────────────────────────────────────────────────────────
+  const SET_SKILL_ICONS = {starlight:'skill-aura',bomber:'skill-bomb',thunder:'skill-lightning-base',timber:'skill-branch',hunter:'skill-damage',laserlord:'skill-laser'};
+  function setBadge(item) {
+    const key=SET_SKILL_ICONS[item?.set],set=Rules.gearSet(item?.set);
+    if(!key||!set||!gameIconData[key])return '';
+    return '<img class="gear-set-badge" src="'+gameIconData[key]+'" style="--set-color:'+set.color+'" alt="'+esc(set.name)+' 세트" title="'+esc(set.name)+' 세트">';
+  }
   function tileMarkup(i, extra = "") {
     const grade = Rules.gearGrade(i.grade),
       item = Rules.gearItem(i.item);
     return (
       '<button class="gear-tile' +
-      extra +
+      (item.set ? ' has-set' : '') + extra +
       '" data-id="' +
       i.id +
       '" style="--grade:' +
       grade.color +
       '" aria-label="' +
-      esc(grade.name + " " + item.name + " 레벨 " + i.level + (i.equipped ? " 착용 중" : "")) +
+      esc(grade.name + " " + item.name + (item.set ? " · " + Rules.gearSet(item.set).name + " 세트" : "") + " 레벨 " + i.level + (i.equipped ? " 착용 중" : "")) +
       '"><img src="' +
       icon(i.item) +
-      '" alt=""><span class="gear-level">Lv.' +
+      '" alt="">' + setBadge(item) + '<span class="gear-level">Lv.' +
       i.level +
       "</span>" +
       (i.equipped ? '<span class="gear-worn-mark">착용</span>' : "") +
@@ -2375,7 +2390,7 @@ gearLevelCost,gearLevelSpent,drawGear,mergeProblem,mergeAllPlan,effectUnlocked,n
       grade.color +
       '"><img src="' +
       icon(i.item) +
-      '" alt=""></span><div><strong id="gear-sheet-name">' +
+      '" alt="">' + setBadge(item) + '</span><div><strong id="gear-sheet-name">' +
       esc(item.name) +
       "</strong><small>" +
       grade.name +
