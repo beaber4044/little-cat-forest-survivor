@@ -737,6 +737,40 @@ button svg,button img{vertical-align:middle;flex:0 0 auto}
 .gear-card {
     transition: none;
   }
+</style><style>/* 장비 상자: 작은 흔들림 → 틈새 빛 → 완전 개방 */
+.gear-open-chest{width:180px;height:180px;isolation:isolate;pointer-events:none;z-index:2}
+.gear-open-chest svg{position:relative;z-index:3;width:100%;height:100%;overflow:visible}
+.chest-lid{transform-box:view-box;transform-origin:80px 79px}
+.chest-mouth{opacity:0}.chest-halo,.chest-rays,.chest-beam{position:absolute;pointer-events:none;opacity:0}
+.chest-halo{inset:-90px;border-radius:50%;background:radial-gradient(circle,#fffce4 0%,#ffe8a3bb 22%,color-mix(in srgb,var(--burst,#d4a5ff) 50%,transparent) 43%,transparent 70%);z-index:0}
+.chest-rays{inset:-120px;background:repeating-conic-gradient(from 10deg,transparent 0deg 12deg,#fff2c14d 13deg 21deg,transparent 22deg 36deg);mask-image:radial-gradient(circle,#000 15%,transparent 69%);z-index:1}
+.chest-beam{left:12%;right:12%;bottom:51%;height:160px;clip-path:polygon(40% 100%,60% 100%,100% 0,0 0);background:linear-gradient(to top,#fffce9f2,#ffe7aa88,transparent);filter:blur(3px);z-index:2;transform-origin:50% 100%}
+.chest-spark{position:absolute;width:10px;height:10px;background:#fff9dc;clip-path:polygon(50% 0,62% 38%,100% 50%,62% 62%,50% 100%,38% 62%,0 50%,38% 38%);opacity:0;z-index:4}
+.s1{left:20%;top:48%}.s2{left:75%;top:39%}.s3{left:40%;top:19%}.s4{left:63%;top:61%}
+.gear-open-chest.shake{animation:chest-rumble 1.5s ease-in-out both}
+.shake .chest-lid{animation:chest-peek 1.5s ease-in-out both}
+.shake .chest-mouth{animation:chest-seam 1.5s ease-in-out both}
+.shake .chest-beam{animation:chest-leak 1.5s ease-in-out both}
+#gear-open.burst .gear-open-chest{animation:chest-arrive .35s ease-out both}
+#gear-open.burst .chest-lid{animation:chest-unlock .55s cubic-bezier(.2,.8,.25,1) both}
+#gear-open.burst .chest-mouth{opacity:1;animation:none}
+#gear-open.burst .chest-halo{animation:chest-glow .7s ease-out both}
+#gear-open.burst .chest-rays{opacity:1;animation:chest-rays 5s linear infinite}
+#gear-open.burst .chest-beam{opacity:1;animation:chest-beam .6s ease-out both}
+#gear-open.burst .chest-spark{animation:chest-spark .8s ease-out both}.s2{animation-delay:.08s!important}.s3{animation-delay:.15s!important}.s4{animation-delay:.04s!important}
+#gear-open.burst .gear-open-grid{position:relative;z-index:5}
+#gear-open.shown .gear-open-chest{opacity:0;transition:opacity .35s;animation:none}
+@keyframes chest-rumble{0%,100%{transform:rotate(0)}12%{transform:translateX(-2px) rotate(-2deg)}24%{transform:translateX(2px) rotate(2deg)}38%{transform:rotate(-3deg)}50%{transform:rotate(3deg)}63%{transform:translateY(-3px) rotate(-2deg)}75%{transform:rotate(2deg)}88%{transform:translateY(-2px) rotate(-1deg)}}
+@keyframes chest-peek{0%,22%{transform:none}40%{transform:translateY(-5px) rotate(-3deg)}55%{transform:translateY(-2px)}72%{transform:translateY(-10px) rotate(-5deg)}86%{transform:translateY(-6px) rotate(-3deg)}100%{transform:translateY(-14px) rotate(-7deg)}}
+@keyframes chest-seam{0%,25%{opacity:0}45%{opacity:.6}60%{opacity:.3}100%{opacity:1}}
+@keyframes chest-leak{0%,25%{opacity:0;transform:scaleY(.1)}45%{opacity:.35;transform:scaleY(.35)}60%{opacity:.2;transform:scaleY(.25)}100%{opacity:.8;transform:scaleY(.65)}}
+@keyframes chest-unlock{from{transform:translateY(-14px) rotate(-7deg)}to{transform:translateY(-65px) rotate(-28deg)}}
+@keyframes chest-arrive{from{transform:scale(.96)}to{transform:scale(1)}}
+@keyframes chest-glow{from{opacity:.2;transform:scale(.4)}to{opacity:1;transform:scale(1.25)}}
+@keyframes chest-rays{from{transform:rotate(0)}to{transform:rotate(360deg)}}
+@keyframes chest-beam{from{opacity:.6;transform:scaleY(.65)}to{opacity:1;transform:scaleY(1.4)}}
+@keyframes chest-spark{0%{opacity:0;transform:translateY(15px) scale(.2)}30%{opacity:1}100%{opacity:0;transform:translateY(-90px) scale(1.4)}}
+@media(prefers-reduced-motion:reduce){.gear-open-chest,.gear-open-chest *{animation:none!important;transition:none!important}#gear-open.burst .chest-lid{transform:translateY(-65px) rotate(-28deg)}}
 </style></head><body>
 <div id="item-notice" class="hidden" role="status" aria-live="polite"><span id="item-notice-icon" aria-hidden="true"></span><div><strong id="item-notice-name"></strong><small id="item-notice-effect"></small></div></div><section id="account-login" class="account-screen" aria-labelledby="login-heading"><div class="login-wrap"><div class="eyebrow">A LITTLE CAT. A BIG ADVENTURE.</div><h1 id="login-heading">고양이의 모험</h1><canvas id="login-cat" width="220" height="220" aria-label="치즈 고양이"></canvas><h2>모험을 이어가세요</h2><p class="login-intro">닉네임으로 기록을 저장하고<br>랭킹 모드의 최고 점수에 도전해요.</p><form id="login-form"><label for="login-username">닉네임</label><input id="login-username" name="username" autocomplete="username" maxlength="12" minlength="2" required placeholder="한글·영문·숫자 2~12자"><label for="login-password">비밀번호</label><input id="login-password" name="password" type="password" autocomplete="current-password" minlength="6" required placeholder="비밀번호 6자 이상"><label class="remember-login"><input type="checkbox" id="login-remember">로그인 기억하기</label><p id="login-status" role="status" aria-live="polite"></p><button id="login-submit" type="submit">로그인하고 시작</button></form><p class="login-note">처음 쓰는 닉네임은 자동으로 만들어져요.<br>다음에도 같은 닉네임과 비밀번호로 들어오세요.</p></div></section>
 <section id="account-ranking" class="account-screen hidden" aria-labelledby="ranking-heading"><header class="ranking-header"><button id="ranking-back" aria-label="랭킹 닫기">←</button><div><div class="eyebrow">RANKING ADVENTURE</div><h1 id="ranking-heading" tabindex="-1">랭킹 모드 랭킹</h1></div><button id="ranking-refresh" aria-label="랭킹 새로고침">↻</button></header><div class="ranking-content"><div id="ranking-run" class="hidden"><small>이번 모험의 점수</small><strong id="ranking-run-score"></strong><p id="ranking-run-details"></p></div><p id="ranking-status" role="status" aria-live="polite"></p><ol id="ranking-list"></ol></div><button id="ranking-play">다시 모험하기</button></section>
@@ -792,7 +826,7 @@ button svg,button img{vertical-align:middle;flex:0 0 auto}
     </div>
     <div id="gear-open" class="hidden" role="dialog" aria-modal="true" aria-label="장비 상자 열기">
       <div class="gear-open-stage">
-        <img class="gear-open-chest" id="gear-open-chest" src="" data-icon="chest-gear" alt="" />
+        <div class="gear-open-chest" id="gear-open-chest" aria-hidden="true"><div class="chest-halo"></div><div class="chest-rays"></div><div class="chest-beam"></div><svg viewBox="0 0 160 160" fill="none"><ellipse cx="80" cy="140" rx="53" ry="8" fill="#090f1a88"/><g class="chest-body" stroke="#69442F" stroke-width="5" stroke-linejoin="round"><path d="M28 79 H132 V130 Q132 138 124 138 H36 Q28 138 28 130Z" fill="#8C65B1"/><path d="M28 79 H132 V92 H28Z" fill="#FFD36B"/><path d="M45 94 V135 M114 94 V135" stroke="#FFD36B" stroke-width="9"/><path d="M80 95 L85 105 L97 107 L88 115 L90 127 L80 121 L70 127 L72 115 L63 107 L75 105Z" fill="#FFF1B8" stroke-width="3"/></g><ellipse class="chest-mouth" cx="80" cy="79" rx="49" ry="10" fill="#fff6ca"/><g class="chest-lid" stroke="#69442F" stroke-width="5" stroke-linejoin="round"><path d="M28 78 V58 Q28 36 50 36 H110 Q132 36 132 58 V78Z" fill="#A77FD0"/><path d="M45 39 V76 M114 39 V76" stroke="#FFD36B" stroke-width="9"/><path d="M28 68 H132 V80 H28Z" fill="#FFD36B"/><path d="M60 48 Q80 38 99 48" stroke="#D9BDF2" stroke-width="3" stroke-linecap="round"/></g></svg><i class="chest-spark s1"></i><i class="chest-spark s2"></i><i class="chest-spark s3"></i><i class="chest-spark s4"></i></div>
         <div class="gear-open-grid" id="gear-open-grid"></div>
       </div>
       <button id="gear-open-close">확인</button>
@@ -1968,7 +2002,7 @@ gearLevelCost,gearLevelSpent,drawGear,mergeProblem,mergeAllPlan});
         );
       })
       .join("");
-    const can = '<img src=GEAR_ICON_DATA["currency-cans"] alt="참치캔">';
+    const can = '<img src="' + GEAR_ICON_DATA["currency-cans"] + '" alt="참치캔">';
     for (const [id, count, price] of [
       ["gear-pull-1", 1, chest.price],
       ["gear-pull-10", 10, chest.tenPrice],
@@ -2011,7 +2045,7 @@ gearLevelCost,gearLevelSpent,drawGear,mergeProblem,mergeAllPlan});
       atMax = i.level >= grade.maxLevel,
       cost = Rules.gearLevelCost(i.level),
       fodder = fodderFor(i);
-    const gold = '<img src=GEAR_ICON_DATA["currency-gold"] alt="골드">';
+    const gold = '<img src="' + GEAR_ICON_DATA["currency-gold"] + '" alt="골드">';
     const effects = item.effects
       .map((e) => {
         const on = Rules.effectUnlocked(e, i.grade),
@@ -2173,8 +2207,8 @@ gearLevelCost,gearLevelSpent,drawGear,mergeProblem,mergeAllPlan});
       reveal.timer = setTimeout(() => {
         stage.classList.add("burst");
         sound("burst");
-        reveal.timer = setTimeout(turn, 260);
-      }, 600);
+        reveal.timer = setTimeout(turn, 650);
+      }, 1500);
     }
     openLayer(() => {
       clearTimeout(reveal?.timer);
