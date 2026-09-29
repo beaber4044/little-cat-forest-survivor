@@ -1413,13 +1413,12 @@ function drawStarlightEchoes(){
  for(const e of player.auraEchoes||[]){
   const x=e.x-camera.x+W/2,y=e.y-camera.y+H/2,fade=Math.max(0,Math.min(1,e.life/.6)),age=2-e.life;
   const radius=Math.max(1,player.auraRadius),pulse=.5+.5*Math.cos(age*Math.PI*4);
-  ctx.save();ctx.globalAlpha=fade*.09;ellipse(x,y,radius,radius,'#b7d3ff');
-  ctx.globalAlpha=fade*.55;ctx.strokeStyle='#8fb7ff';ctx.lineWidth=4;
+  ctx.save();ctx.globalAlpha=fade*.02;ellipse(x,y,radius,radius,'#b7d3ff');
+  ctx.globalAlpha=fade*.18;ctx.strokeStyle='#8fb7ff';ctx.lineWidth=4;
   ctx.beginPath();ctx.arc(x,y,radius,0,Math.PI*2);ctx.stroke();
-  ctx.globalAlpha=fade*(.5+.2*pulse);ctx.strokeStyle='#fff4ba';ctx.lineWidth=2;
+  ctx.globalAlpha=fade*(.12+.06*pulse);ctx.strokeStyle='#fff4ba';ctx.lineWidth=2;
   ctx.beginPath();ctx.arc(x,y,25+pulse*5,0,Math.PI*2);ctx.stroke();
-  ctx.globalAlpha=fade*.62;cat(x,y,1,e.face||1,0);
-  ctx.globalAlpha=fade*.85;ctx.fillStyle='#fff3a6';ctx.strokeStyle='#8ca3d5';ctx.lineWidth=2;
+  ctx.globalAlpha=fade*.25;ctx.fillStyle='#fff3a6';ctx.strokeStyle='#8ca3d5';ctx.lineWidth=2;
   for(let i=0;i<4;i++){const a=i*Math.PI/2+age*.45,sx=x+Math.cos(a)*42,sy=y+Math.sin(a)*30;
    ctx.beginPath();ctx.moveTo(sx,sy-7);ctx.lineTo(sx+3,sy-2);ctx.lineTo(sx+7,sy);ctx.lineTo(sx+3,sy+2);ctx.lineTo(sx,sy+7);ctx.lineTo(sx-3,sy+2);ctx.lineTo(sx-7,sy);ctx.lineTo(sx-3,sy-2);ctx.closePath();ctx.fill();ctx.stroke()}
   ctx.restore();
