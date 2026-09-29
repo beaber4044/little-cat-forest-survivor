@@ -1193,7 +1193,6 @@ function enemyExperience(e){const base=[1,2,3,4,6,9,14,20,28][e.kind||0];const g
 function skillCap(u){return u.id==='recovery'?Infinity:['blast','lightning','laser','branch'].includes(u.id)?1:u.rarity==='epic'?3:10}
 function nextExperienceNeed(previous,nextLevel){if(!ranked())return Math.floor(previous*1.45+5);return nextLevel<=20?Math.floor(previous*1.28+4):Math.floor(previous*1.12+6)}
 const upgrades=[
-{id:'damage',icon:'🎯',name:'탄환 위력',type:'weapon',desc:'탄환 피해 +14.4% · +3.2',apply:()=>player.damage=player.damage*1.144+3.2},
 {id:'rate',icon:'⚡',name:'빠른 발사',type:'weapon',desc:'모든 공격 간격 −8%',apply:()=>{player.rate=Math.max(.13,player.rate*.92);player.cdScale=Math.max(.3,player.cdScale*.92)}},
 {id:'speed',icon:'🐾',name:'가벼운 발걸음',type:'support',desc:'이동 속도 +7%',apply:()=>player.speed*=1.07},
 {id:'magnet',icon:'🧲',name:'반짝이 수집가',type:'support',desc:'경험치 수집 범위 +45',apply:()=>player.magnet+=45},
@@ -1212,7 +1211,7 @@ const upgrades=[
 
 {id:'armor',icon:'🛡️',name:'단단한 털옷',type:'support',desc:'받는 피해 7%p 감소<br>10단계에서 최대 70% 감소',apply:()=>player.armor+=.07},
 {id:'allAttack',icon:'🔥',name:'전체 공격력',type:'support',desc:'모든 공격 피해 +3%',apply:()=>player.attackMultiplier*=1.03},
-{id:'pierce',icon:'🎯',name:'관통탄',type:'weapon',desc:'한 번에 발사하는 탄환 +1<br>탄환 추가 관통 +2명',apply:()=>{player.multi++;player.pierce+=2}},
+{id:'pierce',icon:'🎯',name:'탄환 강화',type:'weapon',desc:'탄환 피해 +14.4% · +3.2<br>한 번에 발사하는 탄환 +1<br>탄환 추가 관통 +2명',apply:()=>{player.damage=player.damage*1.144+3.2;player.multi++;player.pierce+=2}},
 {id:'laser',icon:'🔷',name:'관통 레이저',type:'weapon',desc:'관통 레이저 획득 · 2.8초마다 공격<br>한 번만 얻을 수 있어요',apply:()=>{player.laser=1}},
 {id:'laserDamage',icon:'💠',name:'레이저 위력',type:'weapon',requires:()=>player.laser>0,desc:'레이저 피해 +112 · 굵기 +16%<br>공격 속도 +10% · 사거리 +70<br>2단계마다 레이저 +1',apply:()=>{player.laserDamage+=112;player.laserWidth=Math.min(40,player.laserWidth*1.16);player.laserRate=Math.max(1.1,player.laserRate*.9);player.laserRange+=70;const lv=(player.skills.laserDamage||0)+1;if(lv%2===0)player.laserCount++}},
 {id:'recovery',icon:'🍪',name:'숲의 간식',type:'support',desc:'체력 45 회복',repeat:true,apply:()=>player.hp=Math.min(player.maxHp,player.hp+45)}];
@@ -1230,7 +1229,6 @@ function skillPool(){return (upgradeKind==='boss'?epicUpgrades:upgrades).filter(
 function legendaryDescription(u){
  const count=(player.skills[u.id]||0)+1,fmt=n=>Math.round(n*100)/100;
  const descriptions={
- damage:'탄환 피해 +30.87% · +6.86',
  rate:'모든 공격 간격 −15.36%',
  speed:'이동 속도 +14.49%',
  magnet:'경험치 수집 범위 +90',
@@ -1241,7 +1239,7 @@ function legendaryDescription(u){
  lightningDamage:'번개 피해 +180 · 번개 +2<br>터지는 범위 +24 · 사거리 +120',
  armor:'받는 피해 '+fmt(Math.max(0,Math.min(.7,player.armor+.14)-Math.min(.7,player.armor))*100)+'%p 감소<br>최대 70% 감소',
  allAttack:'모든 공격 피해 +6.09%',
- pierce:'한 번에 발사하는 탄환 +2<br>탄환 추가 관통 +4명',
+ pierce:'탄환 피해 +30.87% · +6.86<br>한 번에 발사하는 탄환 +2<br>탄환 추가 관통 +4명',
  laserDamage:'레이저 피해 +224 · 굵기 +34.56%<br>공격 간격 −19% · 사거리 +140<br>레이저 +1'
  };
  return descriptions[u.id]||u.desc;
