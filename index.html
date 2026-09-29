@@ -1242,8 +1242,8 @@ function drawLevelMotion(){if(state!=='levelup')return;const progress=Math.min(1
 // 모드가 어려울수록 배수가 붙는다.
 function runReward(){
  const mul=selectedMode==='hard'?2:selectedMode==='endless'?1.4:1;
- const gold=Math.round((kills*1+player.level*40)*mul);
- const cans=Math.round((elapsed/60*20+bossKills*50)*mul);
+ const gold=Math.round((kills*2+player.level*80)*mul);
+ const cans=Math.round((elapsed/60*40+bossKills*100)*mul);
  return{gold,cans,mul};
 }
 // 번 재화를 장비 지갑에 넣는다. 로그인 상태에서만 쌓인다.
