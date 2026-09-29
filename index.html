@@ -1370,7 +1370,7 @@ function updateSetPowers(dt){
  // 별빛의 인도자: 지나온 자리에 잔상이 남아 본래 피해의 60% 로 때린다.
  if(player.auraEcho){player.auraEchoClock-=dt;
   if(player.auraEchoClock<=0){player.auraEchoClock=.5;
-   player.auraEchoes.push({x:player.x,y:player.y,life:2,clock:0})}}
+   player.auraEchoes.push({x:player.x,y:player.y,face:player.face,life:2,clock:0})}}
  for(const e of player.auraEchoes){e.life-=dt;e.clock-=dt;
   if(e.clock<=0){e.clock=.55*player.cdScale*player.auraRateMul;
    for(const m of enemies)if(m.hp>0&&dist(m,e)<player.auraRadius)hurt(m,auraHitDamage()*.4)}}
@@ -1409,6 +1409,22 @@ if(player.branches.length){const nextTarget=b=>{let best=null,bd=player.branchRa
    if(player.branchSplit&&Math.random()<.1){const n2=nextTarget(b);if(n2)player.branches.push({x:b.x,y:b.y,target:n2,left:1,hits:[n2],spin:Math.random()*6.28,life:b.life});effects.push({x:b.x,y:b.y,vx:0,vy:0,life:.3,color:'#d8f0a8',ring:24})}if(b.left>0){const n=nextTarget(b);if(n){b.target=n;b.hits.push(n);b.left--}else b.done=true}else b.done=true}}
  player.branches=player.branches.filter(b=>!b.done)}
 if(player.laser&&player.laserClock<=0&&targets.length){const g=gunPose(),base=Math.atan2(targets[0].y-g.y,targets[0].x-g.x);for(let i=0;i<player.laserCount;i++){const a=base+(i-(player.laserCount-1)/2)*.16,ax=g.x+Math.cos(a)*GUN.barrel,ay=g.y+Math.sin(a)*GUN.barrel;let bx=ax+Math.cos(a)*player.laserRange,by=ay+Math.sin(a)*player.laserRange,wall=1;if(!ignoresTrees())for(const t of trees)wall=Math.min(wall,treeContact(t,ax,ay,bx,by));bx=ax+(bx-ax)*wall;by=ay+(by-ay)*wall;for(const e of enemies)if(e.hp>0&&segmentEllipse(ax,ay,bx,by,e.x,e.y,(e.radius||21)+player.laserWidth,(e.radius||21)+player.laserWidth)!==Infinity)hurt(e,player.laserDamage*player.laserDmgMul);effects.push({x:ax,y:ay,x2:bx,y2:by,vx:0,vy:0,life:.35,color:'#70e8ff',laser:true,w:player.laserWidth/8})}player.laserClock=player.laserRate*player.laserRateMul*player.cdScale;Sound.play('laser',.5)}}
+function drawStarlightEchoes(){
+ for(const e of player.auraEchoes||[]){
+  const x=e.x-camera.x+W/2,y=e.y-camera.y+H/2,fade=Math.max(0,Math.min(1,e.life/.6)),age=2-e.life;
+  const radius=Math.max(1,player.auraRadius),pulse=.5+.5*Math.cos(age*Math.PI*4);
+  ctx.save();ctx.globalAlpha=fade*.09;ellipse(x,y,radius,radius,'#b7d3ff');
+  ctx.globalAlpha=fade*.55;ctx.strokeStyle='#8fb7ff';ctx.lineWidth=4;
+  ctx.beginPath();ctx.arc(x,y,radius,0,Math.PI*2);ctx.stroke();
+  ctx.globalAlpha=fade*(.5+.2*pulse);ctx.strokeStyle='#fff4ba';ctx.lineWidth=2;
+  ctx.beginPath();ctx.arc(x,y,25+pulse*5,0,Math.PI*2);ctx.stroke();
+  ctx.globalAlpha=fade*.62;cat(x,y,1,e.face||1,0);
+  ctx.globalAlpha=fade*.85;ctx.fillStyle='#fff3a6';ctx.strokeStyle='#8ca3d5';ctx.lineWidth=2;
+  for(let i=0;i<4;i++){const a=i*Math.PI/2+age*.45,sx=x+Math.cos(a)*42,sy=y+Math.sin(a)*30;
+   ctx.beginPath();ctx.moveTo(sx,sy-7);ctx.lineTo(sx+3,sy-2);ctx.lineTo(sx+7,sy);ctx.lineTo(sx+3,sy+2);ctx.lineTo(sx,sy+7);ctx.lineTo(sx-3,sy+2);ctx.lineTo(sx-7,sy);ctx.lineTo(sx-3,sy-2);ctx.closePath();ctx.fill();ctx.stroke()}
+  ctx.restore();
+ }
+}
 function drawSpecialProjectiles(){for(const g of player.grenades){const x=g.x-camera.x+W/2,y=g.y-camera.y+H/2;worldIcon('skill-bomb',x,y,34)}
  for(const g of player.logs){const x=g.x-camera.x+W/2,y=g.y-camera.y+H/2;ctx.save();ctx.translate(x,y);ctx.rotate(Math.atan2(g.vy,g.vx)+Math.PI/2);ctx.globalAlpha=Math.min(1,g.life/.35);ellipse(0,8,32,14,'#65734522');ctx.strokeStyle='#f7e2b477';ctx.lineWidth=2.5;ctx.lineCap='round';for(const dx of [-20,0,20]){ctx.beginPath();ctx.moveTo(dx,20);ctx.lineTo(dx,31+3*Math.sin(g.spin+dx));ctx.stroke()}ctx.translate(0,Math.sin(g.spin*1.3)*1.7);ctx.rotate(Math.sin(g.spin)*.035);if(logProjectileImage.complete&&logProjectileImage.naturalWidth){ctx.imageSmoothingEnabled=true;ctx.imageSmoothingQuality='high';ctx.drawImage(logProjectileImage,-40,-22,80,44)}ctx.restore()}
  for(const b of player.branches){const x=b.x-camera.x+W/2,y=b.y-camera.y+H/2;ctx.save();ctx.translate(x,y);ctx.rotate(b.spin);
@@ -1435,6 +1451,7 @@ function draw(){ctx.clearRect(0,0,W,H);ctx.fillStyle='#dbe29d';ctx.fillRect(0,0,
 if(!player){ctx.restore();cat(W/2,H*.72,1.8,1,Math.sin(performance.now()/400)*3);return}for(let t of trees.filter(t=>t.y<player.y&&Math.abs(t.x-camera.x)<view.width/2+100&&Math.abs(t.y-camera.y)<view.height/2+140))tree(t);for(let g of gems){let x=g.x-camera.x+W/2,y=g.y-camera.y+H/2;ellipse(x,y,13,15,'#effff033');worldIcon('pickup-xp',x,y,28)}
 
 if(player.aura)drawStarlightAura();
+drawStarlightEchoes();
 let actors=[...chests.map(c=>({y:c.y,draw:()=>drawChest(c)})),...enemies.map(e=>({y:e.y,draw:()=>monster(e)})),{y:player.y,draw:()=>{drawBambiRage();drawShield();ctx.globalAlpha=player.inv>0&&Math.floor(player.inv*15)%2?.45:1;cat(player.x-camera.x+W/2,player.y-camera.y+H/2,1,player.face,Math.sin(elapsed*11)*2);drawGun();ctx.globalAlpha=1}}];actors.sort((a,b)=>a.y-b.y).forEach(a=>a.draw());for(let t of trees.filter(t=>t.y>=player.y&&Math.abs(t.x-camera.x)<view.width/2+100&&Math.abs(t.y-camera.y)<view.height/2+140))tree(t);
 drawSpecialProjectiles();for(let b of bullets){let x=b.x-camera.x+W/2,y=b.y-camera.y+H/2;ctx.save();ctx.translate(x,y);ctx.rotate(Math.atan2(b.vy,b.vx));ellipse(0,0,9*player.bulletSize,4*player.bulletSize,'#fff1a3');ellipse(-6*player.bulletSize,0,7*player.bulletSize,2*player.bulletSize,'#fff9d977');ctx.restore()}for(let e of effects){ctx.globalAlpha=Math.min(1,e.life/.4);if(e.explosion){const x=e.x-camera.x+W/2,y=e.y-camera.y+H/2,p=1-e.life/.55,r=e.ring;ctx.globalAlpha=Math.max(0,1-p)*.15;ellipse(x,y,r,r,'#f3d6a3');ctx.globalAlpha=Math.max(0,1-p)*.8;ctx.strokeStyle='#e5bf87';ctx.lineWidth=3;ctx.beginPath();ctx.arc(x,y,r,0,Math.PI*2);ctx.stroke();ctx.globalAlpha=Math.min(1,e.life/.2);const size=r*(.75+.5*Math.min(1,p*4));if(explosionImage.complete&&explosionImage.naturalWidth)ctx.drawImage(explosionImage,x-size/2,y-size/2,size,size)}else if(e.ring){ctx.strokeStyle=e.color;ctx.lineWidth=3;ctx.beginPath();ctx.arc(e.x-camera.x+W/2,e.y-camera.y+H/2,Math.max(0,e.ring*(1-e.life/.4)),0,Math.PI*2);ctx.stroke()}else if(e.bolt||e.laser){const x=e.x-camera.x+W/2,y=e.y-camera.y+H/2,x2=e.x2-camera.x+W/2,y2=e.y2-camera.y+H/2;ctx.globalAlpha=Math.min(1,e.life/.2);ctx.lineJoin='round';ctx.lineCap='round';const lw=e.laser?(e.w||1):1;for(const [width,color] of [[(e.laser?18:22)*lw,e.laser?'#3299c855':'#68baff66'],[(e.laser?9:11)*lw,e.color],[3*lw,'#ffffff']]){ctx.strokeStyle=color;ctx.lineWidth=width;ctx.beginPath();ctx.moveTo(x,y);if(e.bolt){for(let i=1;i<6;i++)ctx.lineTo(x+(x2-x)*i/6+(i%2?16:-16),y+(y2-y)*i/6)}ctx.lineTo(x2,y2);ctx.stroke()}}else if(e.logChip){ctx.save();ctx.translate(e.x-camera.x+W/2,e.y-camera.y+H/2);ctx.rotate(e.life*14);ctx.fillStyle=e.color;ctx.fillRect(-3,-2,6,4);ctx.restore()}else if(e.logDust)ellipse(e.x-camera.x+W/2,e.y-camera.y+H/2,7*(1-e.life/.4),4*(1-e.life/.4),e.color);else ellipse(e.x-camera.x+W/2,e.y-camera.y+H/2,4,4,e.color);ctx.globalAlpha=1}ctx.font='12px Jua';ctx.textAlign='center';for(let t of texts){ctx.globalAlpha=t.life/.6;ctx.lineWidth=3;ctx.strokeStyle=ink;ctx.strokeText(t.text,t.x-camera.x+W/2,t.y-camera.y+H/2);ctx.fillStyle=t.color;ctx.fillText(t.text,t.x-camera.x+W/2,t.y-camera.y+H/2);ctx.globalAlpha=1}ctx.restore();drawHealth();drawBambiRageGauge();drawLevelMotion();}
 function pause(){if(!['playing','paused'].includes(state))return;if(!$('sound-modal').classList.contains('hidden'))closeSoundModal();else openSoundModal()}
