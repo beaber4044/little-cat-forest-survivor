@@ -1724,6 +1724,7 @@ function gearSetCounts(loadout){const by={};
   const GEAR_CHEST = {
     price: 150,
     tenPrice: 1350,
+    setItemWeight: 1.5,
     chances: { common: 0.6, good: 0.28, rare: 0.09, epic: 0.025, legend: 0.005 },
     pity: [
       { grade: "legend", every: 50 },
@@ -1789,7 +1790,13 @@ function gearSetCounts(loadout){const by={};
     for (const rule of chest.pity)
       if (next[rule.grade] >= rule.every) rank = Math.max(rank, GRADE_RANK[rule.grade]);
     for (const rule of chest.pity) if (rank >= GRADE_RANK[rule.grade]) next[rule.grade] = 0;
-    const item = GEAR_ITEMS[Math.min(GEAR_ITEMS.length - 1, Math.floor(pick * GEAR_ITEMS.length))];
+    const weight = (item) => item.set ? (chest.setItemWeight || 1) : 1;
+    let remaining = Math.max(0, Math.min(1, pick)) * GEAR_ITEMS.reduce((sum, item) => sum + weight(item), 0);
+    let item = GEAR_ITEMS[GEAR_ITEMS.length - 1];
+    for (const candidate of GEAR_ITEMS) {
+      remaining -= weight(candidate);
+      if (remaining < 0) { item = candidate; break; }
+    }
     return { grade: GEAR_GRADES[rank].id, item: item.id, pity: next };
   }
   // 합성: 같은 부위·같은 등급 셋(base 와 fodder 둘), 레전드 아래, 재료는 입지 않은 것. 된다면 null, 아니면 까닭.
