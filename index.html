@@ -1344,7 +1344,7 @@ function auraHitDamage(){return (20+11*(player.aura-1))*player.auraDmgMul}
 function updateSetPowers(dt){
  // 별빛의 인도자: 지나온 자리에 잔상이 남아 본래 피해의 60% 로 때린다.
  if(player.auraEcho){player.auraEchoClock-=dt;
-  if(player.auraEchoClock<=0){player.auraEchoClock=2;
+  if(player.auraEchoClock<=0){player.auraEchoClock=.5;
    player.auraEchoes.push({x:player.x,y:player.y,life:2,clock:0})}}
  for(const e of player.auraEchoes){e.life-=dt;e.clock-=dt;
   if(e.clock<=0){e.clock=.55*player.cdScale*player.auraRateMul;
@@ -1619,7 +1619,7 @@ const GEAR_SETS=[
  {at:1,sums:{auraDmgPct:.1},text:'별빛 고리 피해 +10%'},
  {at:2,sums:{auraRadPct:.3},text:'별빛 고리 범위 +30%'},
  {at:3,sums:{auraRatePct:.1},text:'별빛 고리 공격 속도 +10%'},
- {at:4,sums:{auraEcho:1},text:'2초마다 그 자리에 별빛 잔상을 남겨요 · 2초 유지 · 본래 피해의 60%'}]},
+ {at:4,sums:{auraEcho:1},text:'0.5초마다 그 자리에 별빛 잔상을 남겨요 · 2초 유지 · 본래 피해의 60%'}]},
 {id:'bomber',name:'냥냥 폭탄마',color:'#ffa15c',bonuses:[
  {at:1,sums:{blastDmgPct:.1},text:'냥폭탄 피해 +10%'},
  {at:2,sums:{blastRadPct:.3},text:'냥폭탄 범위 +30%'},
