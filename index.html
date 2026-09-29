@@ -1361,22 +1361,22 @@ window.CatRules=window.CatRules||{};(function(){
     {
       id: "weapon",
       name: "무기",
-      main: { into: "sums", key: "attackPct", unit: 0.024, text: (v) => "공격력 " + pct(v) },
+      main: { into: "sums", key: "attackPct", unit: 0.012, text: (v) => "공격력 " + pct(v) },
     },
     {
       id: "necklace",
       name: "목걸이",
-      main: { into: "sums", key: "attackPct", unit: 0.016, text: (v) => "공격력 " + pct(v) },
+      main: { into: "sums", key: "attackPct", unit: 0.008, text: (v) => "공격력 " + pct(v) },
     },
     {
       id: "armor",
       name: "갑옷",
-      main: { into: "flat", key: "maxHp", unit: 4, round: true, text: (v) => "체력 +" + v },
+      main: { into: "flat", key: "maxHp", unit: 2, round: true, text: (v) => "체력 +" + v },
     },
     {
       id: "boots",
       name: "신발",
-      main: { into: "flat", key: "maxHp", unit: 3, round: true, text: (v) => "체력 +" + v },
+      main: { into: "flat", key: "maxHp", unit: 1.5, round: true, text: (v) => "체력 +" + v },
     },
   ];
   // 등급은 낮은 것부터. 장비의 효과는 레어부터 풀린다(효과마다 at 에 풀리는 등급을 적는다).
@@ -1395,9 +1395,9 @@ window.CatRules=window.CatRules||{};(function(){
       slot: "weapon",
       name: "생선뼈 새총",
       effects: [
-        { at: "rare", sums: { damagePct: 0.15 }, text: "탄환 피해 +15%" },
+        { at: "rare", sums: { damagePct: 0.075 }, text: "탄환 피해 +7.5%" },
         { at: "epic", sums: { pierce: 1 }, text: "관통 +1" },
-        { at: "legend", sums: { ratePct: 0.15 }, text: "공격 속도 +15%" },
+        { at: "legend", sums: { ratePct: 0.075 }, text: "공격 속도 +7.5%" },
       ],
     },
     {
@@ -1405,9 +1405,9 @@ window.CatRules=window.CatRules||{};(function(){
       slot: "weapon",
       name: "별가루 지팡이",
       effects: [
-        { at: "rare", sums: { ratePct: 0.08 }, text: "공격 속도 +8%" },
-        { at: "epic", sums: { attackPct: 0.1 }, text: "모든 공격 피해 +10%" },
-        { at: "legend", sums: { ratePct: 0.12 }, text: "공격 속도 +12%" },
+        { at: "rare", sums: { ratePct: 0.04 }, text: "공격 속도 +4%" },
+        { at: "epic", sums: { attackPct: 0.05 }, text: "모든 공격 피해 +5%" },
+        { at: "legend", sums: { ratePct: 0.06 }, text: "공격 속도 +6%" },
       ],
     },
     {
@@ -1415,9 +1415,9 @@ window.CatRules=window.CatRules||{};(function(){
       slot: "necklace",
       name: "방울 목걸이",
       effects: [
-        { at: "rare", sums: { magnet: 30 }, text: "수집 범위 +30" },
-        { at: "epic", sums: { speedPct: 0.08 }, text: "이동 속도 +8%" },
-        { at: "legend", sums: { attackPct: 0.12 }, text: "모든 공격 피해 +12%" },
+        { at: "rare", sums: { magnet: 15 }, text: "수집 범위 +15" },
+        { at: "epic", sums: { speedPct: 0.04 }, text: "이동 속도 +4%" },
+        { at: "legend", sums: { attackPct: 0.06 }, text: "모든 공격 피해 +6%" },
       ],
     },
     {
@@ -1425,8 +1425,8 @@ window.CatRules=window.CatRules||{};(function(){
       slot: "necklace",
       name: "네잎 클로버",
       effects: [
-        { at: "rare", sums: { maxHp: 20 }, text: "최대 체력 +20" },
-        { at: "epic", sums: { armor: 0.05 }, text: "받는 피해 5%p 감소" },
+        { at: "rare", sums: { maxHp: 10 }, text: "최대 체력 +10" },
+        { at: "epic", sums: { armor: 0.025 }, text: "받는 피해 2.5%p 감소" },
         { at: "legend", sums: { multi: 1 }, text: "한 번에 쏘는 탄환 +1" },
       ],
     },
@@ -1435,9 +1435,9 @@ window.CatRules=window.CatRules||{};(function(){
       slot: "armor",
       name: "두툼한 털조끼",
       effects: [
-        { at: "rare", sums: { armor: 0.05 }, text: "받는 피해 5%p 감소" },
-        { at: "epic", sums: { maxHp: 30 }, text: "최대 체력 +30" },
-        { at: "legend", sums: { armor: 0.08 }, text: "받는 피해 8%p 감소" },
+        { at: "rare", sums: { armor: 0.025 }, text: "받는 피해 2.5%p 감소" },
+        { at: "epic", sums: { maxHp: 15 }, text: "최대 체력 +15" },
+        { at: "legend", sums: { armor: 0.04 }, text: "받는 피해 4%p 감소" },
       ],
     },
     {
@@ -1445,9 +1445,9 @@ window.CatRules=window.CatRules||{};(function(){
       slot: "armor",
       name: "나뭇잎 망토",
       effects: [
-        { at: "rare", sums: { speedPct: 0.06 }, text: "이동 속도 +6%" },
-        { at: "epic", sums: { magnet: 40 }, text: "수집 범위 +40" },
-        { at: "legend", sums: { attackPct: 0.1 }, text: "모든 공격 피해 +10%" },
+        { at: "rare", sums: { speedPct: 0.03 }, text: "이동 속도 +3%" },
+        { at: "epic", sums: { magnet: 20 }, text: "수집 범위 +20" },
+        { at: "legend", sums: { attackPct: 0.05 }, text: "모든 공격 피해 +5%" },
       ],
     },
     {
@@ -1455,9 +1455,9 @@ window.CatRules=window.CatRules||{};(function(){
       slot: "boots",
       name: "젤리 발바닥",
       effects: [
-        { at: "rare", sums: { speedPct: 0.08 }, text: "이동 속도 +8%" },
-        { at: "epic", sums: { armor: 0.05 }, text: "받는 피해 5%p 감소" },
-        { at: "legend", sums: { speedPct: 0.12 }, text: "이동 속도 +12%" },
+        { at: "rare", sums: { speedPct: 0.04 }, text: "이동 속도 +4%" },
+        { at: "epic", sums: { armor: 0.025 }, text: "받는 피해 2.5%p 감소" },
+        { at: "legend", sums: { speedPct: 0.06 }, text: "이동 속도 +6%" },
       ],
     },
     {
@@ -1465,9 +1465,9 @@ window.CatRules=window.CatRules||{};(function(){
       slot: "boots",
       name: "구름 장화",
       effects: [
-        { at: "rare", sums: { magnet: 30 }, text: "수집 범위 +30" },
-        { at: "epic", sums: { ratePct: 0.08 }, text: "공격 속도 +8%" },
-        { at: "legend", sums: { maxHp: 40 }, text: "최대 체력 +40" },
+        { at: "rare", sums: { magnet: 15 }, text: "수집 범위 +15" },
+        { at: "epic", sums: { ratePct: 0.04 }, text: "공격 속도 +4%" },
+        { at: "legend", sums: { maxHp: 20 }, text: "최대 체력 +20" },
       ],
     },
   ];
