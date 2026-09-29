@@ -1412,18 +1412,21 @@ function strikeLightning(target){
  effects.push({x:center.x,y:center.y,vx:0,vy:0,life:.4,color:'#e6faff',ring:30});
  if(player.boltSpark){const sparkRadius=radius*1.8;
   for(const e of enemies)if(e.hp>0&&dist(e,center)<=sparkRadius)hurt(e,damage*.45);
-  effects.push({x:center.x,y:center.y,vx:0,vy:0,life:.55,color:'#fff7c2',ring:sparkRadius,thunderSpark:true})
+  effects.push({x:center.x,y:center.y,vx:0,vy:0,life:.55,color:'#fff7c2',ring:sparkRadius,baseRadius:radius,thunderSpark:true})
  }
 }
 function drawThunderSpark(e){
  const age=.55-e.life;if(age<.06)return;const p=Math.min(1,(age-.06)/.49),x=e.x-camera.x+W/2,y=e.y-camera.y+H/2,r=e.ring;
- const travel=r*(1-Math.pow(1-p,2)),size=Math.min(30,22*attackSizeScale());
- ctx.save();ctx.globalAlpha=(1-p)*.25;ctx.strokeStyle='#b6e9ff';ctx.lineWidth=1.5;
+ const base=e.baseRadius||r/1.8,travel=base*1.04+(r-base*1.04)*(1-Math.pow(1-p,2)),size=Math.min(54,40*attackSizeScale());
+ const fade=Math.min(1,(1-p)*4),flicker=.7+.3*Math.abs(Math.sin(age*95));
+ ctx.save();ctx.globalAlpha=fade*.2;ctx.strokeStyle='#b6e9ff';ctx.lineWidth=1.5;
  ctx.beginPath();ctx.arc(x,y,Math.max(1,travel),0,Math.PI*2);ctx.stroke();
- for(let i=0;i<8;i++){const a=i*Math.PI/4,dx=Math.cos(a),dy=Math.sin(a),tail=Math.max(0,travel-18);
-  ctx.globalAlpha=(1-p)*.6;ctx.strokeStyle=i%2?'#a9e2ff':'#ffe58c';ctx.lineWidth=2;
-  ctx.beginPath();ctx.moveTo(x+dx*tail,y+dy*tail);ctx.lineTo(x+dx*travel,y+dy*travel);ctx.stroke();
-  ctx.globalAlpha=Math.min(1,(1-p)*1.6);worldIcon('effect-thunder-spark',x+dx*travel,y+dy*travel,size)
+ for(let i=0;i<8;i++){const a=i*Math.PI/4,dx=Math.cos(a),dy=Math.sin(a),tail=Math.max(base,travel-Math.min(85,r*.45)),phase=Math.floor(age*45);
+  const points=Array.from({length:7},(_,j)=>{const d=tail+(travel-tail)*j/6,z=j===0||j===6?0:Math.sin(phase*2.3+i*3.7+j*4.1)*(j%2?11:-11);return {x:x+dx*d-dy*z,y:y+dy*d+dx*z}});
+  ctx.globalAlpha=fade*flicker;
+  for(const [width,color] of [[7,'#84d8ff55'],[3,i%2?'#a9e2ff':'#ffe58c'],[1.2,'#fffdeb']]){ctx.strokeStyle=color;ctx.lineWidth=width;ctx.beginPath();points.forEach((v,j)=>j?ctx.lineTo(v.x,v.y):ctx.moveTo(v.x,v.y));ctx.stroke()}
+  const tip=points[4];ctx.lineWidth=2;ctx.strokeStyle='#d7f6ff';ctx.beginPath();ctx.moveTo(tip.x,tip.y);ctx.lineTo(tip.x-dy*14+dx*7,tip.y+dx*14+dy*7);ctx.lineTo(tip.x-dy*9+dx*19,tip.y+dx*9+dy*19);ctx.stroke();
+  ctx.globalAlpha=fade*flicker;worldIcon('effect-thunder-spark',x+dx*travel,y+dy*travel,size)
  }ctx.restore();
 }
 function updateSetPowers(dt){
