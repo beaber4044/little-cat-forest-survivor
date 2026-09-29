@@ -24,7 +24,7 @@ html,body{width:100%;height:100%;overscroll-behavior:none;-webkit-user-select:no
 @media(max-width:320px){.hud{left:calc(env(safe-area-inset-left,0px) + 8px);right:calc(env(safe-area-inset-right,0px) + 8px);gap:5px}.pill{font-size:10px;padding:8px 6px}.hud button{width:44px;height:44px;min-height:44px;padding:5px}.hint{white-space:normal;width:calc(100% - 24px);text-align:center;font-size:10px}h1{font-size:27px}.panel p{font-size:13px;line-height:1.7}.panel{padding:20px 12px}.cards{grid-template-columns:1fr;gap:8px}.cards .skill-card{display:grid;grid-template-columns:46px 1fr 20px;padding:8px;gap:2px 8px;text-align:left}.card-title{grid-column:2;grid-row:1;min-height:0;background:none;color:var(--accent);font-size:12px;padding:0;justify-content:flex-start}.card-icon{grid-column:1;grid-row:1/5;width:42px;height:42px;font-size:26px;margin:auto}.card-type,.card-status{display:none}.card-stars{grid-column:2;grid-row:2;padding:1px 0;justify-content:flex-start;font-size:13px}.cards .card-desc{grid-column:2;grid-row:3;padding:2px 0;min-height:0;font-size:10px}.card-pick{grid-column:3;grid-row:1/5;min-height:44px;background:none;border:0;font-size:0}.card-pick:after{content:'›';font-size:26px}.rarity{grid-column:2;grid-row:2;font-size:8px;padding:0}.epic .card-desc{grid-row:3}.loadout{margin-top:10px}.loadout-slot{font-size:15px}#upgrade h1{font-size:20px}}
 
 button{font-size:13px}h1{font-size:clamp(23px,5vw,30px)}.panel p{font-size:12px;line-height:1.65}.eyebrow{font-size:9px;letter-spacing:1px}.sound{font-size:11px}.pill{font-size:11px}.hint{font-size:10px}#upgrade h1{font-size:22px}#upgrade p{font-size:11px}.card-title{font-size:13px}.card-status{font-size:10px}.cards .card-desc{font-size:11px}.card-pick{font-size:11px}.card-stars{font-size:18px}
-@media(max-width:600px),(pointer:coarse){.pill{font-size:10px;padding:8px 9px}.hud button{font-size:16px}h1{font-size:25px}.panel p{font-size:11px}.sound{font-size:10px}#start,#restart{font-size:13px}.hint{font-size:9px}#upgrade h1{font-size:19px}#upgrade p{font-size:10px}.card-title{font-size:11px}.card-status{font-size:9px}.cards .card-desc{font-size:10px}.card-pick{font-size:10px}.card-stars{font-size:14px}.card-type{font-size:8px}.loadout-label{font-size:10px}.rarity{font-size:8px}}
+@media(max-width:600px),(pointer:coarse){.pill{font-size:10px;padding:8px 9px}.hud button{font-size:16px}h1{font-size:25px}.panel p{font-size:11px}.sound{font-size:10px}#start,#restart,#menu-gear{font-size:13px}.hint{font-size:9px}#upgrade h1{font-size:19px}#upgrade p{font-size:10px}.card-title{font-size:11px}.card-status{font-size:9px}.cards .card-desc{font-size:10px}.card-pick{font-size:10px}.card-stars{font-size:14px}.card-type{font-size:8px}.loadout-label{font-size:10px}.rarity{font-size:8px}}
 @media(max-width:320px){.pill{font-size:9px;padding:8px 6px}.card-title{font-size:10px}.cards .card-desc{font-size:9px}.card-pick{font-size:0}#upgrade h1{font-size:18px}.hint{font-size:9px}.panel p{font-size:11px}}
 
 #character-select .panel{width:min(510px,100%);padding:20px 16px}#character-title{font-size:20px;margin:7px 0}#character-select p{font-size:11px;margin:7px 0 15px}.character-list{display:grid;gap:9px;margin-bottom:18px}.character-option{display:flex;align-items:center;gap:10px;padding:10px;border:2px solid #d6d4b8;border-radius:14px;background:#f4eed8;text-align:left;cursor:pointer;min-height:88px}.character-option:has(input:checked){border-color:#69956d;background:#e9efd2;box-shadow:0 0 0 1px #69956d}.character-option input{accent-color:#69956d;flex-shrink:0;width:16px;height:16px;margin:0}.character-option canvas{width:56px;height:56px;flex-shrink:0;touch-action:auto}.character-copy{display:grid;gap:5px;min-width:0}.character-copy strong{font-size:13px;color:#4f4a33}.character-copy strong small{font-size:9px;font-weight:400;margin-left:5px;color:#858168}.character-ability{font-size:11px;font-weight:700;color:#62845c;line-height:1.5}.character-info{font-size:9px;color:#8d8065;line-height:1.5}#character-play{width:100%;min-height:50px;font-size:12px}#character-back{background:none;border:none;box-shadow:none;font-size:10px;margin-top:10px;min-height:44px;padding:6px;color:#82765e}@media(max-width:320px){#character-select .panel{padding:16px 10px}.character-option{gap:7px;padding:8px}.character-option canvas{width:42px;height:48px}.character-copy strong{font-size:12px}.character-copy strong small{display:block;margin:2px 0 0}.character-ability{font-size:10px}.character-info{font-size:8px}#character-title{font-size:18px}}
@@ -54,7 +54,7 @@ body,button,input,select,textarea,p,small,strong,span,div{font-family:'Jua','Mal
 /* Mobile readability and vertically stacked skill choices. */
 .mode-header{margin:0 auto;flex-shrink:0;position:sticky;top:0;z-index:2;background:#127dd0;padding:4px 0 8px}.mode-content{flex:1;display:flex;flex-direction:column;justify-content:center;margin:0 auto}.mode-header #mode-title{font-size:20px}.mode-header .eyebrow{font-size:10px}
 @media(max-width:600px),(pointer:coarse){
-.panel p{font-size:13px;line-height:1.6}.eyebrow{font-size:11px}.sound{font-size:12px}.pill{font-size:12px}.hint{font-size:11px}#start,#restart,#character-play,#mode-start{font-size:16px}.character-header .eyebrow{font-size:10px}.character-header #character-title{font-size:20px}#selected-name{font-size:24px}#selected-role{font-size:13px}.selected-power{font-size:14px}#selected-info{font-size:12px}.character-picker-label{font-size:12px}.character-option strong{font-size:14px}.mode-option strong{font-size:19px}.mode-option small{font-size:14px;line-height:1.5}#mode-cat{font-size:14px}.score-guide{font-size:12px;line-height:1.6}.mode-content{padding:16px 0}.mode-option{padding:16px 14px;grid-template-columns:32px 1fr}
+.panel p{font-size:13px;line-height:1.6}.eyebrow{font-size:11px}.sound{font-size:12px}.pill{font-size:12px}.hint{font-size:11px}#start,#restart,#character-play,#mode-start,#menu-gear{font-size:16px}.character-header .eyebrow{font-size:10px}.character-header #character-title{font-size:20px}#selected-name{font-size:24px}#selected-role{font-size:13px}.selected-power{font-size:14px}#selected-info{font-size:12px}.character-picker-label{font-size:12px}.character-option strong{font-size:14px}.mode-option strong{font-size:19px}.mode-option small{font-size:14px;line-height:1.5}#mode-cat{font-size:14px}.score-guide{font-size:12px;line-height:1.6}.mode-content{padding:16px 0}.mode-option{padding:16px 14px;grid-template-columns:32px 1fr}
 #upgrade .panel{width:min(460px,100%);padding:20px 14px}#upgrade h1{font-size:25px;margin:8px 0}#upgrade p{font-size:13px;line-height:1.5;margin:10px 0 16px}#upgrade .eyebrow{font-size:11px;letter-spacing:1px}.cards{grid-template-columns:1fr;gap:12px}.cards .skill-card{display:grid;grid-template-columns:54px minmax(0,1fr);grid-template-rows:auto auto auto;padding:14px;gap:5px 14px;text-align:left;box-shadow:none;min-height:120px}.cards .card-title{grid-column:2;grid-row:1;background:none;min-height:0;padding:0;justify-content:flex-start;font-size:17px;color:#fff}.cards .card-icon{grid-column:1;grid-row:1/4;width:52px;height:52px;min-width:0;margin:auto;font-size:31px;border-radius:12px}.cards .card-stars{grid-column:2;grid-row:2;justify-content:flex-start;font-size:17px;padding:0;gap:3px}.cards .card-desc{grid-column:2;grid-row:3;min-height:0;padding:0;font-size:14px;line-height:1.5}.cards .card-type,.cards .card-status{display:none}.cards .rarity{grid-column:2;grid-row:2;padding:0;font-size:12px}.cards .epic .card-desc{grid-row:3}.cards .card-pick{display:none}
 }
 @media(max-width:340px){.character-header #character-title{font-size:17px}.mode-header #mode-title{font-size:18px}.pill{font-size:10px}#upgrade .panel{padding:16px 10px}.cards .skill-card{grid-template-columns:44px minmax(0,1fr);padding:12px;gap:5px 10px;min-height:110px}.cards .card-icon{width:42px;height:42px;font-size:27px}.cards .card-title{font-size:15px}.cards .card-desc{font-size:13px}.mode-option small{font-size:13px}.score-guide{font-size:11px}}
@@ -1501,22 +1501,22 @@ window.CatRules=window.CatRules||{};(function(){
     {
       id: "weapon",
       name: "무기",
-      main: { into: "sums", key: "attackPct", unit: 0.012, text: (v) => "공격력 " + pct(v) },
+      main: { into: "sums", key: "attackPct", unit: 0.006, text: (v) => "공격력 " + pct(v) },
     },
     {
       id: "necklace",
       name: "목걸이",
-      main: { into: "sums", key: "attackPct", unit: 0.008, text: (v) => "공격력 " + pct(v) },
+      main: { into: "sums", key: "attackPct", unit: 0.004, text: (v) => "공격력 " + pct(v) },
     },
     {
       id: "armor",
       name: "갑옷",
-      main: { into: "flat", key: "maxHp", unit: 2, round: true, text: (v) => "체력 +" + v },
+      main: { into: "flat", key: "maxHp", unit: 1, round: true, text: (v) => "체력 +" + v },
     },
     {
       id: "boots",
       name: "신발",
-      main: { into: "flat", key: "maxHp", unit: 1.5, round: true, text: (v) => "체력 +" + v },
+      main: { into: "flat", key: "maxHp", unit: 0.75, round: true, text: (v) => "체력 +" + v },
     },
   ];
   // 등급은 낮은 것부터. 장비의 효과는 레어부터 풀린다(효과마다 at 에 풀리는 등급을 적는다).
@@ -1535,9 +1535,9 @@ window.CatRules=window.CatRules||{};(function(){
       slot: "weapon",
       name: "생선뼈 새총",
       effects: [
-        { at: "rare", sums: { damagePct: 0.075 }, text: "탄환 피해 +7.5%" },
+        { at: "rare", sums: { damagePct: 0.0375 }, text: "탄환 피해 +3.75%" },
         { at: "epic", sums: { pierce: 1 }, text: "관통 +1" },
-        { at: "legend", sums: { ratePct: 0.075 }, text: "공격 속도 +7.5%" },
+        { at: "legend", sums: { ratePct: 0.0375 }, text: "공격 속도 +3.75%" },
       ],
     },
     {
@@ -1545,9 +1545,9 @@ window.CatRules=window.CatRules||{};(function(){
       slot: "weapon",
       name: "별가루 지팡이",
       effects: [
-        { at: "rare", sums: { ratePct: 0.04 }, text: "공격 속도 +4%" },
-        { at: "epic", sums: { attackPct: 0.05 }, text: "모든 공격 피해 +5%" },
-        { at: "legend", sums: { ratePct: 0.06 }, text: "공격 속도 +6%" },
+        { at: "rare", sums: { ratePct: 0.02 }, text: "공격 속도 +2%" },
+        { at: "epic", sums: { attackPct: 0.025 }, text: "모든 공격 피해 +2.5%" },
+        { at: "legend", sums: { ratePct: 0.03 }, text: "공격 속도 +3%" },
       ],
     },
     {
@@ -1555,9 +1555,9 @@ window.CatRules=window.CatRules||{};(function(){
       slot: "necklace",
       name: "방울 목걸이",
       effects: [
-        { at: "rare", sums: { magnet: 15 }, text: "수집 범위 +15" },
-        { at: "epic", sums: { speedPct: 0.04 }, text: "이동 속도 +4%" },
-        { at: "legend", sums: { attackPct: 0.06 }, text: "모든 공격 피해 +6%" },
+        { at: "rare", sums: { magnet: 7 }, text: "수집 범위 +7" },
+        { at: "epic", sums: { speedPct: 0.02 }, text: "이동 속도 +2%" },
+        { at: "legend", sums: { attackPct: 0.03 }, text: "모든 공격 피해 +3%" },
       ],
     },
     {
@@ -1565,8 +1565,8 @@ window.CatRules=window.CatRules||{};(function(){
       slot: "necklace",
       name: "네잎 클로버",
       effects: [
-        { at: "rare", sums: { maxHp: 10 }, text: "최대 체력 +10" },
-        { at: "epic", sums: { armor: 0.025 }, text: "받는 피해 2.5%p 감소" },
+        { at: "rare", sums: { maxHp: 5 }, text: "최대 체력 +5" },
+        { at: "epic", sums: { armor: 0.0125 }, text: "받는 피해 1.25%p 감소" },
         { at: "legend", sums: { multi: 1 }, text: "한 번에 쏘는 탄환 +1" },
       ],
     },
@@ -1575,9 +1575,9 @@ window.CatRules=window.CatRules||{};(function(){
       slot: "armor",
       name: "두툼한 털조끼",
       effects: [
-        { at: "rare", sums: { armor: 0.025 }, text: "받는 피해 2.5%p 감소" },
-        { at: "epic", sums: { maxHp: 15 }, text: "최대 체력 +15" },
-        { at: "legend", sums: { armor: 0.04 }, text: "받는 피해 4%p 감소" },
+        { at: "rare", sums: { armor: 0.0125 }, text: "받는 피해 1.25%p 감소" },
+        { at: "epic", sums: { maxHp: 7 }, text: "최대 체력 +7" },
+        { at: "legend", sums: { armor: 0.02 }, text: "받는 피해 2%p 감소" },
       ],
     },
     {
@@ -1585,9 +1585,9 @@ window.CatRules=window.CatRules||{};(function(){
       slot: "armor",
       name: "나뭇잎 망토",
       effects: [
-        { at: "rare", sums: { speedPct: 0.03 }, text: "이동 속도 +3%" },
-        { at: "epic", sums: { magnet: 20 }, text: "수집 범위 +20" },
-        { at: "legend", sums: { attackPct: 0.05 }, text: "모든 공격 피해 +5%" },
+        { at: "rare", sums: { speedPct: 0.015 }, text: "이동 속도 +1.5%" },
+        { at: "epic", sums: { magnet: 10 }, text: "수집 범위 +10" },
+        { at: "legend", sums: { attackPct: 0.025 }, text: "모든 공격 피해 +2.5%" },
       ],
     },
     {
@@ -1595,9 +1595,9 @@ window.CatRules=window.CatRules||{};(function(){
       slot: "boots",
       name: "젤리 발바닥",
       effects: [
-        { at: "rare", sums: { speedPct: 0.04 }, text: "이동 속도 +4%" },
-        { at: "epic", sums: { armor: 0.025 }, text: "받는 피해 2.5%p 감소" },
-        { at: "legend", sums: { speedPct: 0.06 }, text: "이동 속도 +6%" },
+        { at: "rare", sums: { speedPct: 0.02 }, text: "이동 속도 +2%" },
+        { at: "epic", sums: { armor: 0.0125 }, text: "받는 피해 1.25%p 감소" },
+        { at: "legend", sums: { speedPct: 0.015 }, text: "이동 속도 +1.5%" },
       ],
     },
     {
@@ -1605,9 +1605,9 @@ window.CatRules=window.CatRules||{};(function(){
       slot: "boots",
       name: "구름 장화",
       effects: [
-        { at: "rare", sums: { magnet: 15 }, text: "수집 범위 +15" },
-        { at: "epic", sums: { ratePct: 0.04 }, text: "공격 속도 +4%" },
-        { at: "legend", sums: { maxHp: 20 }, text: "최대 체력 +20" },
+        { at: "rare", sums: { magnet: 7 }, text: "수집 범위 +7" },
+        { at: "epic", sums: { ratePct: 0.02 }, text: "공격 속도 +2%" },
+        { at: "legend", sums: { maxHp: 5 }, text: "최대 체력 +5" },
       ],
     },
   ];
@@ -1656,10 +1656,10 @@ const SET_ITEMS=[
 ];
 // 세트 장비도 기본 장비처럼 등급마다 옵션이 하나씩 열린다. 부위에 따라 같은 꼴을 쓴다.
 const SET_SLOT_EFFECTS={
- weapon:[{at:'rare',sums:{damagePct:.075},text:'탄환 피해 +7.5%'},{at:'epic',sums:{ratePct:.04},text:'공격 속도 +4%'},{at:'legend',sums:{attackPct:.06},text:'모든 공격 피해 +6%'}],
- necklace:[{at:'rare',sums:{magnet:15},text:'수집 범위 +15'},{at:'epic',sums:{attackPct:.05},text:'모든 공격 피해 +5%'},{at:'legend',sums:{ratePct:.06},text:'공격 속도 +6%'}],
- armor:[{at:'rare',sums:{maxHp:10},text:'최대 체력 +10'},{at:'epic',sums:{armor:.025},text:'받는 피해 2.5%p 감소'},{at:'legend',sums:{maxHp:20},text:'최대 체력 +20'}],
- boots:[{at:'rare',sums:{speedPct:.04},text:'이동 속도 +4%'},{at:'epic',sums:{magnet:20},text:'수집 범위 +20'},{at:'legend',sums:{speedPct:.06},text:'이동 속도 +6%'}],
+ weapon:[{at:'rare',sums:{damagePct:.0375},text:'탄환 피해 +3.75%'},{at:'epic',sums:{ratePct:.02},text:'공격 속도 +2%'},{at:'legend',sums:{attackPct:.03},text:'모든 공격 피해 +3%'}],
+ necklace:[{at:'rare',sums:{magnet:7},text:'수집 범위 +7'},{at:'epic',sums:{attackPct:.025},text:'모든 공격 피해 +2.5%'},{at:'legend',sums:{ratePct:.03},text:'공격 속도 +3%'}],
+ armor:[{at:'rare',sums:{maxHp:5},text:'최대 체력 +5'},{at:'epic',sums:{armor:.0125},text:'받는 피해 1.25%p 감소'},{at:'legend',sums:{maxHp:5},text:'최대 체력 +5'}],
+ boots:[{at:'rare',sums:{speedPct:.02},text:'이동 속도 +2%'},{at:'epic',sums:{magnet:10},text:'수집 범위 +10'},{at:'legend',sums:{speedPct:.03},text:'이동 속도 +3%'}],
 };
 for(const [setId,items] of SET_ITEMS)
  for(const [id,slot,name] of items)
@@ -1973,6 +1973,13 @@ gearLevelCost,gearLevelSpent,drawGear,mergeProblem,mergeAllPlan,effectUnlocked,n
     }
   };
   window.CatAccount.openLayer = (close) => { layers.push(close); inert(true); };
+  // Esc 는 맨 위에 열린 겹 화면 하나만 닫는다 (장비 시트 → 상자 → 장비 화면 차례로).
+  addEventListener('keydown', (e) => {
+    if (e.key !== 'Escape' || !layers.length) return;
+    e.preventDefault();
+    e.stopPropagation();
+    window.CatAccount.closeLayer();
+  }, true);
   window.CatAccount.closeLayer = () => {
     const close = layers.pop();
     if (close) close();
