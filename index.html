@@ -1223,7 +1223,27 @@ function rank(u){return player.skills[u.id]||0}
 function chooseSkill(u){if(state!=='upgrade'||rank(u)>=skillCap(u))return;banishMode=false;u.apply();if(u.id!=='recovery')player.skills[u.id]=Math.min(skillCap(u),rank(u)+1);$('upgrade').classList.add('hidden');state='playing';keys={};pointer=null;updateHud();canvas.focus();if(bossRewards>0)bossReward();else if(player.xp>=player.need)levelUp()}
 const CHAR_FAVOR=[['blast','blastDamage','blastRange'],['laser','laserDamage'],['aura','epicAura'],['pierce','multi'],['branch','branchDamage','branchCount']];
 function skillPool(){return (upgradeKind==='boss'?epicUpgrades:upgrades).filter(u=>rank(u)<skillCap(u)&&(!u.requires||u.requires())&&!bannedSkills.has(u.id))}
-function legendaryUpgrade(u){return {...u,rarity:'legendary',desc:u.desc+'<br><strong>전설: 위 효과 2단계분 · 레벨 +1</strong>',apply:()=>{const had=Object.prototype.hasOwnProperty.call(player.skills,u.id),before=rank(u);u.apply();player.skills[u.id]=before+1;try{u.apply()}finally{if(had)player.skills[u.id]=before;else delete player.skills[u.id]}}}}
+function legendaryDescription(u){
+ const count=(player.skills[u.id]||0)+1,fmt=n=>Math.round(n*100)/100;
+ const descriptions={
+ damage:'탄환 피해 +30.87% · +6.86',
+ rate:'모든 공격 간격 −15.36%',
+ speed:'이동 속도 +14.49%',
+ magnet:'경험치 수집 범위 +90',
+ health:'최대 체력 +50<br>체력 90 회복',
+ aura:player.aura>0?'별빛 고리 피해 +22<br>고리 반경 +28':'별빛 고리 획득 · 피해 31<br>고리 반경 134',
+ multi:'한 번에 발사하는 탄환 +2',
+ branchDamage:'나뭇가지 피해 +72 · 튕김 +2<br>튕기는 사거리 +140<br>나뭇가지 +'+([count,count+1].reduce((sum,lv)=>sum+(lv>=10?2:lv%2===0?1:0),0)),
+ blastDamage:'냥폭탄 피해 +640<br>폭발 반경 +21%<br>투척 간격 −13.51%',
+ lightningDamage:'번개 피해 +180 · 번개 +2<br>터지는 범위 +24 · 사거리 +120',
+ armor:'받는 피해 '+fmt(Math.max(0,Math.min(.7,player.armor+.14)-Math.min(.7,player.armor))*100)+'%p 감소<br>최대 70% 감소',
+ allAttack:'모든 공격 피해 +6.09%',
+ pierce:'탄환 추가 관통 +4명',
+ laserDamage:'레이저 피해 +224 · 굵기 +34.56%<br>공격 간격 −19% · 사거리 +140<br>레이저 +1'
+ };
+ return descriptions[u.id]||u.desc;
+}
+function legendaryUpgrade(u){return {...u,rarity:'legendary',desc:legendaryDescription(u),apply:()=>{const had=Object.prototype.hasOwnProperty.call(player.skills,u.id),before=rank(u);u.apply();player.skills[u.id]=before+1;try{u.apply()}finally{if(had)player.skills[u.id]=before;else delete player.skills[u.id]}}}}
 let legendaryMisses=0,legendaryRollLevel=-1,legendaryOffer=false;
 function addLegendaryChoice(list){
  if(upgradeKind!=='normal')return list;
