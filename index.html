@@ -1202,7 +1202,7 @@ const upgrades=[
 {id:'aura',icon:'🌟',name:'별빛 고리',type:'weapon',desc:'기본 피해 20 · 반경 120<br>강화마다 피해 +11 · 반경 +14',apply:()=>{if(player.aura>0)player.auraRadius+=14;player.aura++}},
 
 {id:'branch',icon:'🌿',name:'나뭇가지 던지기',type:'weapon',desc:'나뭇가지 획득 · 2.2초마다 투척<br>맞은 뒤 주변 몬스터에게 1회 튕겨요<br>한 번만 얻을 수 있어요',apply:()=>{player.branch=1}},
-{id:'branchDamage',icon:'💫',name:'나뭇가지 위력',type:'weapon',requires:()=>player.branch>0,desc:'나뭇가지 피해 +36 · 튕김 +1<br>튕기는 사거리 +70<br>2단계마다 나뭇가지 +1<br>10단계에서는 +2',apply:()=>{player.branchDamage+=36;player.branchBounce++;player.branchRange+=70;const lv=(player.skills.branchDamage||0)+1;if(lv>=10)player.branchCount+=2;else if(lv%2===0)player.branchCount++}},
+{id:'branchDamage',icon:'💫',name:'나뭇가지 위력',type:'weapon',requires:()=>player.branch>0,desc:'나뭇가지 피해 +25.2 · 튕김 +1<br>튕기는 사거리 +70<br>2단계마다 나뭇가지 +1<br>10단계에서는 +2',apply:()=>{player.branchDamage+=36;player.branchBounce++;player.branchRange+=70;const lv=(player.skills.branchDamage||0)+1;if(lv>=10)player.branchCount+=2;else if(lv%2===0)player.branchCount++}},
 
 {id:'blast',icon:'💣',name:'냥폭탄',type:'weapon',desc:'냥폭탄 획득 · 3초마다 투척<br>주변 몬스터를 한 방에 날려요',apply:()=>{player.blast=1}},
 {id:'blastDamage',icon:'💥',name:'냥폭탄 위력',type:'weapon',requires:()=>player.blast>0,desc:'냥폭탄 피해 +320<br>폭발 반경 +5%<br>투척 간격 −7%',apply:()=>{player.blastDamage+=320;player.blastRadius=Math.round(player.blastRadius*1.05);player.blastRate=Math.max(.35,player.blastRate*.93)}},
@@ -1239,7 +1239,7 @@ function legendaryDescription(u){
  magnet:'경험치 수집 범위 +90',
  health:'최대 체력 +50<br>체력 90 회복',
  aura:player.aura>0?'별빛 고리 피해 +22<br>고리 반경 +28':'별빛 고리 획득 · 피해 31<br>고리 반경 134',
- branchDamage:'나뭇가지 피해 +72 · 튕김 +2<br>튕기는 사거리 +140<br>나뭇가지 +'+([count,count+1].reduce((sum,lv)=>sum+(lv>=10?2:lv%2===0?1:0),0)),
+ branchDamage:'나뭇가지 피해 +50.4 · 튕김 +2<br>튕기는 사거리 +140<br>나뭇가지 +'+([count,count+1].reduce((sum,lv)=>sum+(lv>=10?2:lv%2===0?1:0),0)),
  blastDamage:'냥폭탄 피해 +640<br>폭발 반경 +10.25%<br>투척 간격 −13.51%',
  lightningDamage:'번개 피해 +180 · 번개 +2<br>터지는 범위 +24 · 사거리 +120',
  armor:'받는 피해 '+fmt(Math.max(0,Math.min(.7,player.armor+.14)-Math.min(.7,player.armor))*100)+'%p 감소<br>최대 70% 감소',
@@ -1417,19 +1417,23 @@ function strikeLightning(target){
 }
 function drawThunderSpark(e){
  const age=.55-e.life;if(age<.06)return;const p=Math.min(1,(age-.06)/.49),x=e.x-camera.x+W/2,y=e.y-camera.y+H/2,r=e.ring;
- ctx.save();ctx.globalAlpha=(1-p)*.16;ellipse(x,y,r,r,'#86dfff');
- ctx.globalAlpha=(1-p)*.85;ctx.strokeStyle='#fff0a1';ctx.lineWidth=3;
- ctx.beginPath();ctx.arc(x,y,Math.max(1,r*(.3+.7*Math.min(1,p*3))),0,Math.PI*2);ctx.stroke();
- ctx.globalAlpha=Math.min(1,(1-p)*1.7);worldIcon('effect-thunder-spark',x,y,r*2*(.75+.25*Math.min(1,p*4)));ctx.restore();
+ const travel=r*(1-Math.pow(1-p,2)),size=Math.min(30,22*attackSizeScale());
+ ctx.save();ctx.globalAlpha=(1-p)*.25;ctx.strokeStyle='#b6e9ff';ctx.lineWidth=1.5;
+ ctx.beginPath();ctx.arc(x,y,Math.max(1,travel),0,Math.PI*2);ctx.stroke();
+ for(let i=0;i<8;i++){const a=i*Math.PI/4,dx=Math.cos(a),dy=Math.sin(a),tail=Math.max(0,travel-18);
+  ctx.globalAlpha=(1-p)*.6;ctx.strokeStyle=i%2?'#a9e2ff':'#ffe58c';ctx.lineWidth=2;
+  ctx.beginPath();ctx.moveTo(x+dx*tail,y+dy*tail);ctx.lineTo(x+dx*travel,y+dy*travel);ctx.stroke();
+  ctx.globalAlpha=Math.min(1,(1-p)*1.6);worldIcon('effect-thunder-spark',x+dx*travel,y+dy*travel,size)
+ }ctx.restore();
 }
 function updateSetPowers(dt){
- // 별빛의 인도자: 지나온 자리에 잔상이 남아 본래 피해의 60% 로 때린다.
+ // 별빛걸음 잔상: 고리 피해의 32%, 강화 전 기준 0.85초마다 타격.
  if(player.auraEcho){player.auraEchoClock-=dt;
   if(player.auraEchoClock<=0){player.auraEchoClock=.5;
    player.auraEchoes.push({x:player.x,y:player.y,face:player.face,life:2,clock:0})}}
  for(const e of player.auraEchoes){e.life-=dt;e.clock-=dt;
-  if(e.clock<=0){e.clock=.55*player.cdScale*player.auraRateMul;
-   for(const m of enemies)if(m.hp>0&&dist(m,e)<player.auraRadius*attackSizeScale())hurt(m,auraHitDamage()*.4)}}
+  if(e.clock<=0){e.clock=.85*player.cdScale*player.auraRateMul;
+   for(const m of enemies)if(m.hp>0&&dist(m,e)<player.auraRadius*attackSizeScale())hurt(m,auraHitDamage()*.32)}}
  player.auraEchoes=player.auraEchoes.filter(e=>e.life>0);
  // 냥냥 폭탄마: 20초마다 하늘에서 냥폭탄 5개가 떨어진다.
  if(player.blastRain){player.blastRainClock-=dt;
@@ -1460,7 +1464,7 @@ if(player.branches.length){const nextTarget=b=>{let best=null,bd=player.branchRa
   if(!b.target||b.target.hp<=0){const n=nextTarget(b);if(!n){b.done=true;continue}b.target=n}
   const t=b.target,dx=t.x-b.x,dy=t.y-b.y,d=Math.max(.001,Math.hypot(dx,dy)),step=Math.min(d,266*dt);
   b.x+=dx/d*step;b.y+=dy/d*step;
-  if(d-step<=(t.radius||21)+8*attackSizeScale()){hurt(t,player.branchDamage*player.branchDmgMul);if(b.hits.indexOf(t)<0)b.hits.push(t);
+  if(d-step<=(t.radius||21)+8*attackSizeScale()){hurt(t,player.branchDamage*player.branchDmgMul*.7);if(b.hits.indexOf(t)<0)b.hits.push(t);
    effects.push({x:t.x,y:t.y,vx:0,vy:0,life:.26,color:'#c2e58e',ring:20});
    if(player.branchSplit&&Math.random()<.1){const n2=nextTarget(b);if(n2)player.branches.push({x:b.x,y:b.y,target:n2,left:1,hits:[n2],spin:Math.random()*6.28,life:b.life});effects.push({x:b.x,y:b.y,vx:0,vy:0,life:.3,color:'#d8f0a8',ring:24})}if(b.left>0){const n=nextTarget(b);if(n){b.target=n;b.hits.push(n);b.left--}else b.done=true}else b.done=true}}
  player.branches=player.branches.filter(b=>!b.done)}
