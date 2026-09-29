@@ -2399,8 +2399,11 @@ gearLevelCost,gearLevelSpent,drawGear,mergeProblem,mergeAllPlan,effectUnlocked,n
       "</p>";
     el("gear-sheet-close").onclick = () => closeLayer();
     el("gear-act-wear").onclick = async (e) => {
-      if (await act(e.currentTarget, "gear/items/" + i.id + (i.equipped ? "/unequip" : "/equip"), {}))
+      if (await act(e.currentTarget, "gear/items/" + i.id + (i.equipped ? "/unequip" : "/equip"), {})) {
         sound("chest");
+        // 갈아입고 나면 시트는 볼 일이 끝났다. 바로 닫아 가방으로 돌아간다.
+        if (!sheetClosing) ((sheetClosing = true), closeLayer());
+      }
     };
     el("gear-act-level").onclick = async (e) => {
       if (await act(e.currentTarget, "gear/items/" + i.id + "/level", {})) sound("gearLevel");
